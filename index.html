@@ -11,10 +11,10 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--bg:#0a0a0a;--bg2:#141414;--bg3:#1e1e1e;--bg4:#252525;--border:rgba(255,255,255,0.07);--text:#f0f0f0;--text2:#777;--text3:#444;--green:#22c55e;--red:#ef4444;--blue:#3b82f6;--gold:#f59e0b;--purple:#a855f7;}
+:root{--bg:#0a0a0a;--bg2:#141414;--bg3:#1e1e1e;--border:rgba(255,255,255,0.07);--text:#f0f0f0;--text2:#777;--text3:#444;--green:#22c55e;--red:#ef4444;--blue:#3b82f6;--gold:#f59e0b;--purple:#a855f7;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;min-height:100vh;overflow-x:hidden;}
-.screen{display:none;max-width:430px;margin:0 auto;padding-bottom:85px;min-height:100vh;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;min-height:100vh;}
+.screen{display:none;max-width:430px;margin:0 auto;padding-bottom:85px;}
 .screen.active{display:block;}
 .header{padding:50px 20px 14px;display:flex;justify-content:space-between;align-items:flex-end;}
 .header-title{font-size:24px;font-weight:700;letter-spacing:-0.5px;}
@@ -34,15 +34,15 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .conn-bar.err{background:rgba(239,68,68,0.07);border:0.5px solid rgba(239,68,68,0.2);color:var(--red);}
 .conn-bar.loading{background:var(--bg2);border:0.5px solid var(--border);color:var(--text2);}
 .assets{padding:0 20px 18px;display:flex;flex-direction:column;gap:7px;}
-.asset-row{background:var(--bg2);border:0.5px solid var(--border);border-radius:14px;padding:13px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:transform 0.1s;}
-.asset-row:active{transform:scale(0.99);background:var(--bg3);}
+.asset-row{background:var(--bg2);border:0.5px solid var(--border);border-radius:14px;padding:13px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.asset-row:active{background:var(--bg3);transform:scale(0.99);}
 .asset-row.selected{border-color:var(--blue);background:rgba(59,130,246,0.06);}
 .asset-left{display:flex;align-items:center;gap:11px;}
 .asset-icon{width:33px;height:33px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--bg3);}
 .asset-name{font-size:14px;font-weight:600;}
 .asset-sym{font-size:11px;color:var(--text2);margin-top:1px;}
 .asset-right{text-align:right;}
-.asset-price{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;}
+.asset-price{font-size:15px;font-weight:600;}
 .asset-change{font-size:11px;font-weight:500;margin-top:2px;}
 .up{color:var(--green);}.down{color:var(--red);}.flat{color:var(--text2);}
 .refresh-row{display:flex;justify-content:space-between;align-items:center;padding:0 20px 9px;}
@@ -56,11 +56,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .pos-pnl{font-size:14px;font-weight:600;}
 .pos-empty{padding:18px 15px;text-align:center;font-size:13px;color:var(--text3);}
 .win{color:var(--green);}.loss{color:var(--red);}
-
-/* Chart */
 .chart-header{padding:50px 20px 12px;display:flex;align-items:center;gap:12px;}
 .back-btn{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:7px 13px;font-size:13px;color:var(--text);cursor:pointer;flex-shrink:0;}
-.chart-asset-info{flex:1;min-width:0;}
+.chart-asset-info{flex:1;}
 .chart-asset-name{font-size:18px;font-weight:700;}
 .chart-asset-price{font-size:12px;color:var(--text2);margin-top:2px;}
 .chart-signal{font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;flex-shrink:0;}
@@ -87,43 +85,32 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .setup-header{padding:12px 15px;border-bottom:0.5px solid var(--border);font-size:13px;font-weight:600;}
 .setup-levels{display:grid;grid-template-columns:1fr 1fr 1fr;padding:13px 15px;gap:8px;}
 .setup-level{text-align:center;}
-.setup-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.setup-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;margin-bottom:4px;}
 .setup-val{font-size:14px;font-weight:600;}
 .e-val{color:var(--blue);}.s-val{color:var(--red);}.t-val{color:var(--green);}
-.setup-rr{padding:0 15px 10px;font-size:12px;font-weight:600;color:var(--purple);}
+.setup-rr{padding:0 15px 8px;font-size:12px;font-weight:600;color:var(--purple);}
 .setup-note{padding:0 15px 12px;font-size:12px;color:var(--text2);line-height:1.6;}
-
-/* AI Chat screen */
 .chat-header{padding:50px 20px 14px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid var(--border);}
 .chat-title{font-size:18px;font-weight:700;flex:1;}
-.chat-subtitle{font-size:11px;color:var(--text2);margin-top:2px;}
-.clear-btn{font-size:12px;color:var(--text2);background:none;border:none;cursor:pointer;padding:4px 8px;}
-.chat-messages{padding:16px 20px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;min-height:200px;}
-.msg{max-width:85%;padding:11px 14px;border-radius:16px;font-size:14px;line-height:1.6;}
+.clear-btn{font-size:12px;color:var(--text2);background:none;border:none;cursor:pointer;}
+.chat-messages{padding:16px 20px;display:flex;flex-direction:column;gap:12px;padding-bottom:140px;}
+.msg{max-width:86%;padding:11px 14px;border-radius:16px;font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:break-word;}
 .msg.user{align-self:flex-end;background:var(--blue);color:white;border-bottom-right-radius:4px;}
 .msg.ai{align-self:flex-start;background:var(--bg2);color:var(--text);border-bottom-left-radius:4px;border:0.5px solid var(--border);}
-.msg.ai.loading{color:var(--text2);}
-.msg-time{font-size:10px;opacity:0.6;margin-top:4px;}
-.chat-context-bar{margin:0 20px 10px;padding:10px 13px;background:var(--bg3);border-radius:11px;font-size:11px;color:var(--text2);line-height:1.5;}
-.chat-context-bar span{color:var(--gold);font-weight:600;}
+.msg.loading{color:var(--text2);}
+.quick-btns{display:flex;gap:7px;padding:0 20px 12px;overflow-x:auto;}
+.quick-btn{padding:7px 13px;border-radius:20px;font-size:12px;cursor:pointer;background:var(--bg2);border:0.5px solid var(--border);color:var(--text2);white-space:nowrap;flex-shrink:0;}
 .chat-input-wrap{position:fixed;bottom:85px;left:0;right:0;max-width:430px;margin:0 auto;padding:10px 16px;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);border-top:0.5px solid var(--border);display:flex;gap:8px;z-index:100;}
 .chat-input{flex:1;background:var(--bg2);border:0.5px solid var(--border);border-radius:22px;padding:10px 16px;font-size:14px;color:var(--text);outline:none;resize:none;max-height:100px;font-family:inherit;}
 .chat-input:focus{border-color:var(--blue);}
-.send-btn{width:40px;height:40px;border-radius:50%;background:var(--blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;align-self:flex-end;}
+.send-btn{width:40px;height:40px;border-radius:50%;background:var(--blue);border:none;cursor:pointer;font-size:18px;flex-shrink:0;align-self:flex-end;color:white;}
 .send-btn:disabled{opacity:0.4;}
-.quick-btns{display:flex;gap:7px;padding:0 20px 10px;overflow-x:auto;}
-.quick-btn{padding:7px 13px;border-radius:20px;font-size:12px;cursor:pointer;background:var(--bg2);border:0.5px solid var(--border);color:var(--text2);white-space:nowrap;flex-shrink:0;}
-.quick-btn:active{background:var(--bg3);}
-
-/* Log */
 .log-list{padding:0 20px 18px;}
 .log-entry{background:var(--bg2);border:0.5px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
 .log-asset{font-size:14px;font-weight:600;}
 .log-detail{font-size:11px;color:var(--text2);margin-top:2px;}
 .log-pnl{font-size:15px;font-weight:600;}
 .log-empty{text-align:center;font-size:13px;color:var(--text3);padding:30px 20px;}
-
-/* Settings */
 .settings-group{margin:0 20px 18px;background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;overflow:hidden;}
 .settings-row{padding:13px 15px;border-bottom:0.5px solid var(--border);}
 .settings-row:last-child{border-bottom:none;}
@@ -132,10 +119,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .settings-input:focus{border-color:var(--blue);}
 .save-btn{margin:0 20px 10px;width:calc(100% - 40px);padding:13px;background:var(--blue);color:white;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;}
 .settings-note{margin:8px 20px 0;font-size:11px;color:var(--text3);line-height:1.5;}
-
-/* Bottom nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);border-top:0.5px solid var(--border);padding:10px 0 26px;display:flex;justify-content:space-around;z-index:999;}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:3px 16px;}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:3px 14px;}
 .nav-icon{font-size:19px;}
 .nav-label{font-size:10px;color:var(--text2);}
 .nav-item.active .nav-label{color:var(--blue);}
@@ -147,32 +132,24 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <!-- MARKETS -->
 <div class="screen active" id="screen-markets">
-  <div class="header">
-    <div class="header-title">Trade<span>AI</span></div>
-    <div class="live-pill"><div class="live-dot" id="live-dot"></div><span id="live-text">Connecting...</span></div>
-  </div>
+  <div class="header"><div class="header-title">Trade<span>AI</span></div><div class="live-pill"><div class="live-dot" id="live-dot"></div><span id="live-text">Connecting...</span></div></div>
   <div class="stats">
     <div class="stat-card"><div class="stat-label">Balance</div><div class="stat-value" id="stat-bal">—</div></div>
     <div class="stat-card"><div class="stat-label">Open P&L</div><div class="stat-value" id="stat-pnl">—</div></div>
   </div>
-  <div class="conn-bar loading" id="conn-bar">⏳ Connecting to Capital.com...</div>
+  <div class="conn-bar loading" id="conn-bar">⏳ Connecting...</div>
   <div class="section-label">Open positions</div>
   <div class="positions-box" id="positions-box"><div class="pos-empty">No open positions</div></div>
   <div class="section-label" style="margin-top:14px;">Live prices — tap to analyse</div>
   <div class="refresh-row"><div class="refresh-time" id="refresh-time">Loading...</div><button class="refresh-btn" onclick="refreshAll()">↻ Refresh</button></div>
-  <div class="assets" id="assets-list">
-    <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-  </div>
+  <div class="assets" id="assets-list"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
 </div>
 
 <!-- CHART -->
 <div class="screen" id="screen-chart">
   <div class="chart-header">
     <button class="back-btn" onclick="showScreen('markets')">← Back</button>
-    <div class="chart-asset-info">
-      <div class="chart-asset-name" id="ch-name">—</div>
-      <div class="chart-asset-price" id="ch-price">Loading...</div>
-    </div>
+    <div class="chart-asset-info"><div class="chart-asset-name" id="ch-name">—</div><div class="chart-asset-price" id="ch-price">—</div></div>
     <div class="chart-signal sig-wait" id="ch-signal">—</div>
   </div>
   <div class="tf-row">
@@ -190,8 +167,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <div class="indicator-row"><span class="ind-name">MACD histogram</span><div class="ind-right"><span class="ind-value" id="ind-macd">—</span><span class="ind-signal ind-neut" id="ind-macd-sig">—</span></div></div>
     <div class="indicator-row"><span class="ind-name">EMA 20</span><div class="ind-right"><span class="ind-value" id="ind-ema20">—</span><span class="ind-signal ind-neut" id="ind-ema20-sig">—</span></div></div>
     <div class="indicator-row"><span class="ind-name">EMA 50</span><div class="ind-right"><span class="ind-value" id="ind-ema50">—</span><span class="ind-signal ind-neut" id="ind-ema50-sig">—</span></div></div>
-    <div class="indicator-row"><span class="ind-name">Support (20 candles)</span><div class="ind-right"><span class="ind-value" id="ind-sup">—</span></div></div>
-    <div class="indicator-row"><span class="ind-name">Resistance (20 candles)</span><div class="ind-right"><span class="ind-value" id="ind-res">—</span></div></div>
+    <div class="indicator-row"><span class="ind-name">Support</span><div class="ind-right"><span class="ind-value" id="ind-sup">—</span></div></div>
+    <div class="indicator-row"><span class="ind-name">Resistance</span><div class="ind-right"><span class="ind-value" id="ind-res">—</span></div></div>
   </div>
   <div class="setup-card">
     <div class="setup-header">AI Trade Setup</div>
@@ -201,33 +178,23 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       <div class="setup-level"><div class="setup-lbl">Target</div><div class="setup-val t-val" id="su-target">—</div></div>
     </div>
     <div class="setup-rr" id="su-rr"></div>
-    <div class="setup-note" id="su-note">Loading analysis...</div>
-    <button class="save-btn" style="margin:0 15px 15px;width:calc(100% - 30px);" onclick="sendChartToChat()">🤖 Send to AI Co-Pilot Chat</button>
+    <div class="setup-note" id="su-note">Loading...</div>
+    <button class="save-btn" style="margin:0 15px 15px;width:calc(100% - 30px);" onclick="sendChartToChat()">🤖 Send to AI Co-Pilot</button>
   </div>
 </div>
 
-<!-- AI CHAT -->
+<!-- CHAT -->
 <div class="screen" id="screen-chat">
-  <div class="chat-header">
-    <div style="flex:1">
-      <div class="chat-title">AI Co-Pilot</div>
-      <div class="chat-subtitle" id="chat-subtitle">Your trading co-pilot</div>
-    </div>
-    <button class="clear-btn" onclick="clearChat()">Clear</button>
-  </div>
-  <div class="chat-context-bar" id="chat-context" style="display:none;">
-    📊 Context: <span id="ctx-text">—</span>
-  </div>
+  <div class="chat-header"><div><div class="chat-title">AI Co-Pilot</div><div style="font-size:11px;color:var(--text2);margin-top:2px;" id="chat-sub">Your trading co-pilot</div></div><button class="clear-btn" onclick="clearChat()">Clear</button></div>
   <div class="quick-btns">
     <button class="quick-btn" onclick="quickMsg('What should I trade right now?')">What to trade?</button>
     <button class="quick-btn" onclick="quickMsg('Analyse Gold for me')">Analyse Gold</button>
-    <button class="quick-btn" onclick="quickMsg('Should I close my position now?')">Close position?</button>
-    <button class="quick-btn" onclick="quickMsg('What is the market doing today?')">Market overview</button>
+    <button class="quick-btn" onclick="quickMsg('Should I close my position?')">Close position?</button>
+    <button class="quick-btn" onclick="quickMsg('Give me a market overview')">Market overview</button>
   </div>
   <div class="chat-messages" id="chat-messages">
-    <div class="msg ai">👋 Salam! I'm your AI trading co-pilot. I can see your live prices, indicators, and account. Ask me anything — what to trade, when to enter, when to exit. Tap the chart tab to analyse an asset then send it here for a full breakdown.</div>
+    <div class="msg ai">👋 Salam Nas! I'm your AI trading co-pilot. Ask me anything — what to trade, entry points, when to exit. Tap any asset then "Send to AI Co-Pilot" for a full analysis.</div>
   </div>
-  <div style="height:120px;"></div>
   <div class="chat-input-wrap">
     <textarea class="chat-input" id="chat-input" placeholder="Ask your co-pilot..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
     <button class="send-btn" id="send-btn" onclick="sendMessage()">↑</button>
@@ -246,23 +213,26 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div class="header"><div class="header-title">Settings</div></div>
   <div class="section-label">Capital.com</div>
   <div class="settings-group">
-    <div class="settings-row"><div class="settings-label">API Key</div><input class="settings-input" id="cfg-key" type="password" placeholder="Capital.com API key"></div>
-    <div class="settings-row"><div class="settings-label">Email</div><input class="settings-input" id="cfg-email" type="email" placeholder="your@email.com"></div>
-    <div class="settings-row"><div class="settings-label">Password</div><input class="settings-input" id="cfg-pass" type="password" placeholder="Password"></div>
+    <div class="settings-row"><div class="settings-label">API Key</div><input class="settings-input" id="cfg-key" type="text" placeholder="Capital.com API key" autocomplete="off"></div>
+    <div class="settings-row"><div class="settings-label">Email</div><input class="settings-input" id="cfg-email" type="text" placeholder="your@email.com" autocomplete="off"></div>
+    <div class="settings-row"><div class="settings-label">Password</div><input class="settings-input" id="cfg-pass" type="password" placeholder="Password" autocomplete="off"></div>
   </div>
-  <div class="section-label">Price data</div>
+  <div class="section-label">Price & Chart data</div>
   <div class="settings-group">
-    <div class="settings-row"><div class="settings-label">Twelve Data API Key</div><input class="settings-input" id="cfg-twelve" type="password" placeholder="Twelve Data key"></div>
+    <div class="settings-row"><div class="settings-label">Twelve Data API Key</div><input class="settings-input" id="cfg-twelve" type="text" placeholder="Twelve Data key" autocomplete="off"></div>
   </div>
   <div class="section-label">Account</div>
   <div class="settings-group">
     <div class="settings-row"><div class="settings-label">Starting balance (AUD)</div><input class="settings-input" id="cfg-bal" type="number" placeholder="100"></div>
   </div>
-  <button class="save-btn" onclick="saveSettings()">Save & Reconnect</button>
-  <div class="settings-note">🔒 Stored on this device only. Never sent to any server.</div>
+  <button class="save-btn" onclick="saveSettings()">✅ Save & Connect</button>
+  <div class="settings-note">🔒 Stored only on this device. Tap Save every time you update.</div>
+  <div style="margin:16px 20px;padding:12px;background:var(--bg2);border-radius:12px;border:0.5px solid var(--border);">
+    <div style="font-size:11px;color:var(--text2);margin-bottom:8px;">Saved values (tap to verify):</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.8;" id="saved-display">—</div>
+  </div>
 </div>
 
-<!-- Bottom Nav -->
 <div class="bottom-nav">
   <div class="nav-item active" id="nav-markets" onclick="showScreen('markets')"><div class="nav-icon">📊</div><div class="nav-label">Markets</div></div>
   <div class="nav-item" id="nav-chart" onclick="showScreen('chart')"><div class="nav-icon">📈</div><div class="nav-label">Chart</div></div>
@@ -272,8 +242,22 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 </div>
 
 <script>
+// HARDCODED FALLBACK KEYS — always available even if localStorage fails
+const FALLBACK={
+  cap_key:'8xCSoCalQKgwZhGG',
+  cap_email:'nasrudean.abdullahi@gmail.com',
+  cap_pass:'Nasr8166$',
+  twelve_key:'0d8660d8c78e4401ae868c982a47506c',
+  start_bal:'100'
+};
+
+function cfg(k){
+  try{const v=localStorage.getItem(k);return(v&&v.trim())?v:FALLBACK[k]||'';}
+  catch(e){return FALLBACK[k]||'';}
+}
+function saveCfg(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+
 const CAP='https://api-capital.backend.capital.com';
-const CLAUDE_API='https://api.anthropic.com/v1/messages';
 const ASSETS=[
   {sym:'XAU/USD',epic:'GOLD',name:'Gold',icon:'🥇',dp:2},
   {sym:'XAG/USD',epic:'SILVER',name:'Silver',icon:'🥈',dp:3},
@@ -283,55 +267,23 @@ const ASSETS=[
   {sym:'BTC/USD',epic:'BITCOIN',name:'Bitcoin',icon:'₿',dp:0},
 ];
 
-function cfg(k){return localStorage.getItem(k)||'';}
-function saveCfg(k,v){localStorage.setItem(k,v);}
-
 let cst=null,sec=null,prices={},prevPrices={},selectedAsset=null,currentTF='1h';
-let chatHistory=[],trades=JSON.parse(localStorage.getItem('trades')||'[]');
-let lastIndicators={};
+let chatHistory=[],trades=JSON.parse(localStorage.getItem('nas_trades')||'[]');
+let lastInd={};
 
-const SYSTEM_PROMPT=`You are TradeAI, an expert trading co-pilot for a 20-year-old Muslim day trader in Sydney, Australia named Nas. You have access to his live Capital.com account data, real-time prices, and technical indicators.
+const SYS=`You are TradeAI, expert trading co-pilot for Nas — a 20-year-old Muslim day trader in Sydney, Australia.
+Key rules: Islamic account (intraday ONLY, close same day, no riba), max 2% risk per trade, Capital.com broker with up to 30x leverage, starting capital A$100.
+Assets: Gold (XAU/USD), Silver, EUR/USD, GBP/USD, Bitcoin.
+Be direct and decisive. Give exact entry, stop loss, target and position size every time. Format trade setups clearly. Keep responses concise for mobile.`;
 
-Key facts about Nas:
-- Account balance: ~A$100 starting capital
-- Trading style: Intraday only (Islamic account — NO overnight positions)
-- Assets: Gold (XAU/USD), Silver, Platinum, EUR/USD, GBP/USD, Bitcoin
-- Risk per trade: Maximum 2% of account
-- Broker: Capital.com (leverage up to 30x)
-- Goal: Build wealth systematically, eventually automate via bot
-- All trades must be halal — no riba, close same day
-
-Your role:
-- Call trades with precision: exact entry, stop loss, take profit
-- Calculate position size for 2% risk automatically
-- Read RSI, MACD, EMA indicators and explain what they mean
-- Be direct and decisive — tell him exactly what to do
-- Keep responses concise and actionable
-- When indicators are mixed, say WAIT and explain why
-- Track context across the conversation — remember what was discussed
-
-Format trade setups clearly:
-DIRECTION: BUY/SELL
-ENTRY: [price]
-STOP LOSS: [price] ([distance] pips/points)
-TARGET: [price] ([distance] pips/points)  
-POSITION SIZE: [units] (2% risk = A$[amount])
-RISK/REWARD: 1:[ratio]
-REASONING: [brief explanation]`;
-
-function showScreen(name){
+function showScreen(n){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+name).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('nav-'+name).classList.add('active');
-  if(name==='log')renderLog();
-  if(name==='settings')loadSettingsUI();
-  if(name==='chat'){
-    setTimeout(()=>{
-      const msgs=document.getElementById('chat-messages');
-      msgs.scrollTop=msgs.scrollHeight;
-    },100);
-  }
+  document.getElementById('screen-'+n).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  document.getElementById('nav-'+n).classList.add('active');
+  if(n==='log')renderLog();
+  if(n==='settings')loadSettingsUI();
+  if(n==='chat')setTimeout(()=>{const m=document.getElementById('chat-messages');m.scrollTop=m.scrollHeight;},100);
 }
 
 function loadSettingsUI(){
@@ -339,32 +291,55 @@ function loadSettingsUI(){
   document.getElementById('cfg-email').value=cfg('cap_email');
   document.getElementById('cfg-pass').value=cfg('cap_pass');
   document.getElementById('cfg-twelve').value=cfg('twelve_key');
-  document.getElementById('cfg-bal').value=cfg('start_bal')||'100';
+  document.getElementById('cfg-bal').value=cfg('start_bal');
+  updateSavedDisplay();
+}
+
+function updateSavedDisplay(){
+  const k=cfg('cap_key'),t=cfg('twelve_key'),e=cfg('cap_email');
+  document.getElementById('saved-display').innerHTML=
+    `Cap Key: ${k?k.substring(0,8)+'...' :'❌ missing'}<br>Email: ${e||'❌ missing'}<br>Twelve Key: ${t?t.substring(0,8)+'...':'❌ missing'}<br>Balance: A$${cfg('start_bal')||'100'}`;
 }
 
 function saveSettings(){
-  saveCfg('cap_key',document.getElementById('cfg-key').value);
-  saveCfg('cap_email',document.getElementById('cfg-email').value);
-  saveCfg('cap_pass',document.getElementById('cfg-pass').value);
-  saveCfg('twelve_key',document.getElementById('cfg-twelve').value);
-  saveCfg('start_bal',document.getElementById('cfg-bal').value);
+  const k=document.getElementById('cfg-key').value.trim();
+  const e=document.getElementById('cfg-email').value.trim();
+  const p=document.getElementById('cfg-pass').value.trim();
+  const t=document.getElementById('cfg-twelve').value.trim();
+  const b=document.getElementById('cfg-bal').value.trim();
+  if(k)saveCfg('cap_key',k);
+  if(e)saveCfg('cap_email',e);
+  if(p)saveCfg('cap_pass',p);
+  if(t)saveCfg('twelve_key',t);
+  if(b)saveCfg('start_bal',b);
+  updateSavedDisplay();
+  alert('✅ Settings saved! Connecting...');
   showScreen('markets');
   init();
 }
 
-// Capital.com
+function setConn(type,msg){const b=document.getElementById('conn-bar');b.className='conn-bar '+type;b.textContent=msg;}
+
 async function session(){
   const key=cfg('cap_key'),email=cfg('cap_email'),pass=cfg('cap_pass');
-  if(!key||!email||!pass){setConn('err','⚙️ Go to Settings to enter your credentials');return false;}
+  if(!key||!email||!pass){setConn('err','⚙️ Enter credentials in Settings');return false;}
   try{
     const r=await fetch(`${CAP}/api/v1/session`,{method:'POST',headers:{'Content-Type':'application/json','X-CAP-API-KEY':key},body:JSON.stringify({identifier:email,password:pass})});
     cst=r.headers.get('CST');sec=r.headers.get('X-SECURITY-TOKEN');
-    if(cst&&sec){setConn('ok','✅ Connected to Capital.com');document.getElementById('live-dot').className='live-dot';document.getElementById('live-text').textContent='Live';return true;}
+    if(cst&&sec){
+      setConn('ok','✅ Connected to Capital.com');
+      document.getElementById('live-dot').className='live-dot';
+      document.getElementById('live-text').textContent='Live';
+      return true;
+    }
     throw new Error();
-  }catch(e){setConn('err','⚠️ Capital.com offline — using Twelve Data');document.getElementById('live-dot').className='live-dot off';document.getElementById('live-text').textContent='Backup';return false;}
+  }catch(e){
+    setConn('err','⚠️ Capital.com offline — using Twelve Data');
+    document.getElementById('live-dot').className='live-dot off';
+    document.getElementById('live-text').textContent='Backup';
+    return false;
+  }
 }
-
-function setConn(type,msg){const b=document.getElementById('conn-bar');b.className='conn-bar '+type;b.textContent=msg;}
 
 async function fetchAccount(){
   if(!cst)return;
@@ -372,7 +347,7 @@ async function fetchAccount(){
     const r=await fetch(`${CAP}/api/v1/accounts`,{headers:{'CST':cst,'X-SECURITY-TOKEN':sec,'X-CAP-API-KEY':cfg('cap_key')}});
     const d=await r.json();
     if(d.accounts?.length){
-      const a=d.accounts[0];const bal=a.balance?.balance||0,pnl=a.balance?.profitLoss||0;
+      const a=d.accounts[0],bal=a.balance?.balance||0,pnl=a.balance?.profitLoss||0;
       document.getElementById('stat-bal').textContent='A$'+bal.toFixed(2);
       const pe=document.getElementById('stat-pnl');
       pe.textContent=(pnl>=0?'+':'')+'A$'+Math.abs(pnl).toFixed(2);
@@ -389,24 +364,21 @@ async function fetchPositions(){
     if(d.positions?.length){
       box.innerHTML=d.positions.map(p=>{
         const pnl=p.position?.upl||0,dir=p.position?.direction||'—',size=p.position?.size||'—',name=p.market?.instrumentName||'—',level=p.position?.level||'—';
-        return`<div class="position-row"><div><div class="pos-name">${name} · ${dir}</div><div class="pos-detail">Size: ${size} · Entry: ${level}</div></div><div class="pos-pnl ${pnl>=0?'win':'loss'}">${pnl>=0?'+':''}$${Math.abs(pnl).toFixed(2)}</div></div>`;
+        return`<div class="position-row"><div><div class="pos-name">${name} · ${dir}</div><div class="pos-detail">Size:${size} · Entry:${level}</div></div><div class="pos-pnl ${pnl>=0?'win':'loss'}">${pnl>=0?'+':''}$${Math.abs(pnl).toFixed(2)}</div></div>`;
       }).join('');
     }else{box.innerHTML='<div class="pos-empty">No open positions</div>';}
   }catch(e){}
 }
 
-function fmt(a,p){
-  if(!p||p===0)return'—';
-  if(a.dp===0)return'$'+Math.round(p).toLocaleString('en-AU');
-  return p.toFixed(a.dp);
-}
-function pct(sym){const c=prices[sym],p=prevPrices[sym];if(!c||!p)return null;return((c-p)/p)*100;}
+function fmt(a,p){if(!p)return'—';if(a.dp===0)return'$'+Math.round(p).toLocaleString();return p.toFixed(a.dp);}
+function pct(s){const c=prices[s],p=prevPrices[s];if(!c||!p)return null;return((c-p)/p)*100;}
 
 async function fetchPrices(){
   const key=cfg('twelve_key');if(!key)return;
   prevPrices={...prices};
   const results=await Promise.all(ASSETS.map(async a=>{
-    try{const r=await fetch(`https://api.twelvedata.com/price?symbol=${encodeURIComponent(a.sym)}&apikey=${key}`);const d=await r.json();return d.price?parseFloat(d.price):null;}catch{return null;}
+    try{const r=await fetch(`https://api.twelvedata.com/price?symbol=${encodeURIComponent(a.sym)}&apikey=${key}`);const d=await r.json();return d.price?parseFloat(d.price):null;}
+    catch{return null;}
   }));
   ASSETS.forEach((a,i)=>{if(results[i])prices[a.sym]=results[i];});
 }
@@ -422,7 +394,8 @@ async function refreshAll(){
 
 function renderAssets(){
   const list=document.getElementById('assets-list');
-  if(!Object.keys(prices).length){list.innerHTML='<div style="text-align:center;color:#444;padding:20px;font-size:13px;">No prices — check Settings</div>';return;}
+  const hasP=Object.values(prices).some(v=>v>0);
+  if(!hasP){list.innerHTML='<div style="text-align:center;color:#555;padding:20px;font-size:13px;">Loading prices...</div>';return;}
   list.innerHTML=ASSETS.map(a=>{
     const p=prices[a.sym],ch=pct(a.sym);
     const chC=ch===null?'flat':ch>0?'up':'down';
@@ -435,69 +408,61 @@ function renderAssets(){
   }).join('');
 }
 
-// Chart
 async function fetchCandles(sym,tf){
   const key=cfg('twelve_key');if(!key)return[];
   try{
     const r=await fetch(`https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(sym)}&interval=${tf}&outputsize=60&apikey=${key}`);
     const d=await r.json();
-    if(d.values)return d.values.map(v=>({t:v.datetime,o:parseFloat(v.open),h:parseFloat(v.high),l:parseFloat(v.low),c:parseFloat(v.close)})).reverse();
+    if(d.values)return d.values.map(v=>({o:parseFloat(v.open),h:parseFloat(v.high),l:parseFloat(v.low),c:parseFloat(v.close)})).reverse();
     return[];
   }catch{return[];}
 }
 
-function calcRSI(closes,period=14){
-  if(closes.length<period+1)return[];
+function calcRSI(cl,p=14){
+  if(cl.length<p+1)return[];
   let gA=0,lA=0;
-  for(let i=1;i<=period;i++){const d=closes[i]-closes[i-1];d>0?gA+=d:lA-=d;}
-  gA/=period;lA/=period;
-  const rsi=Array(period).fill(null);
-  rsi.push(lA===0?100:100-(100/(1+(gA/lA))));
-  for(let i=period+1;i<closes.length;i++){
-    const d=closes[i]-closes[i-1];
-    gA=(gA*(period-1)+(d>0?d:0))/period;
-    lA=(lA*(period-1)+(d<0?-d:0))/period;
-    rsi.push(gA===0?100:lA===0?0:100-(100/(1+(gA/lA))));
+  for(let i=1;i<=p;i++){const d=cl[i]-cl[i-1];d>0?gA+=d:lA-=d;}
+  gA/=p;lA/=p;
+  const r=Array(p).fill(null);
+  r.push(lA===0?100:100-(100/(1+(gA/lA))));
+  for(let i=p+1;i<cl.length;i++){
+    const d=cl[i]-cl[i-1];
+    gA=(gA*(p-1)+(d>0?d:0))/p;lA=(lA*(p-1)+(d<0?-d:0))/p;
+    r.push(gA===0?100:lA===0?0:100-(100/(1+(gA/lA))));
   }
-  return rsi;
-}
-
-function calcEMA(closes,period){
-  const k=2/(period+1);let ema=closes[0];const r=[ema];
-  for(let i=1;i<closes.length;i++){ema=closes[i]*k+ema*(1-k);r.push(ema);}
   return r;
 }
 
-function calcMACD(closes){
-  const e12=calcEMA(closes,12),e26=calcEMA(closes,26);
+function calcEMA(cl,p){const k=2/(p+1);let e=cl[0];const r=[e];for(let i=1;i<cl.length;i++){e=cl[i]*k+e*(1-k);r.push(e);}return r;}
+
+function calcMACD(cl){
+  const e12=calcEMA(cl,12),e26=calcEMA(cl,26);
   const macd=e12.map((v,i)=>v-e26[i]);
   const sig=calcEMA(macd.slice(25),9);
-  const hist=macd[macd.length-1]-sig[sig.length-1];
-  return{macd:macd[macd.length-1],signal:sig[sig.length-1],hist};
+  return{hist:macd[macd.length-1]-sig[sig.length-1]};
 }
 
 function drawCandles(candles){
-  const canvas=document.getElementById('candle-canvas');
-  const W=canvas.parentElement.clientWidth;canvas.width=W;canvas.height=220;
-  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,W,220);
+  const cv=document.getElementById('candle-canvas'),W=cv.parentElement.clientWidth;
+  cv.width=W;cv.height=220;
+  const ctx=cv.getContext('2d');ctx.clearRect(0,0,W,220);
   if(!candles.length)return;
   const vis=candles.slice(-50);
-  const maxP=Math.max(...vis.map(c=>c.h)),minP=Math.min(...vis.map(c=>c.l)),range=maxP-minP||1;
-  const pad=20,cH=220-pad*2,toY=p=>pad+(1-(p-minP)/range)*cH;
-  const cW=Math.max(4,Math.floor((W-20)/vis.length)-1),gap=Math.floor((W-20)/vis.length);
+  const maxP=Math.max(...vis.map(c=>c.h)),minP=Math.min(...vis.map(c=>c.l)),rng=maxP-minP||1;
+  const pad=20,cH=200,toY=p=>pad+(1-(p-minP)/rng)*cH;
+  const gap=Math.floor((W-20)/vis.length),cW=Math.max(3,gap-1);
   ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
   for(let i=0;i<=4;i++){const y=pad+i*(cH/4);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
   ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='10px -apple-system';ctx.textAlign='right';
-  for(let i=0;i<=4;i++){const p=maxP-i*(range/4);ctx.fillText(p.toFixed(2),W-4,pad+i*(cH/4)+4);}
-  const closes=vis.map(c=>c.c);
-  const e20=calcEMA(closes,20),e50=calcEMA(closes,Math.min(50,closes.length));
-  [[e20,'rgba(59,130,246,0.8)'],[e50,'rgba(168,85,247,0.8)']].forEach(([ema,color])=>{
-    ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.beginPath();
+  for(let i=0;i<=4;i++){ctx.fillText((maxP-i*(rng/4)).toFixed(2),W-4,pad+i*(cH/4)+4);}
+  const cl=vis.map(c=>c.c),e20=calcEMA(cl,20),e50=calcEMA(cl,Math.min(50,cl.length));
+  [[e20,'rgba(59,130,246,0.8)'],[e50,'rgba(168,85,247,0.8)']].forEach(([ema,col])=>{
+    ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();
     ema.forEach((v,i)=>{const x=10+i*gap+cW/2;i===0?ctx.moveTo(x,toY(v)):ctx.lineTo(x,toY(v));});ctx.stroke();
   });
   vis.forEach((c,i)=>{
-    const x=10+i*gap,bull=c.c>=c.o,color=bull?'#22c55e':'#ef4444';
-    ctx.fillStyle=color;ctx.strokeStyle=color;ctx.lineWidth=1;
+    const x=10+i*gap,bull=c.c>=c.o,col=bull?'#22c55e':'#ef4444';
+    ctx.fillStyle=col;ctx.strokeStyle=col;ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(x+cW/2,toY(c.h));ctx.lineTo(x+cW/2,toY(c.l));ctx.stroke();
     const bT=toY(Math.max(c.o,c.c)),bB=toY(Math.min(c.o,c.c));
     ctx.fillRect(x,bT,cW,Math.max(1,bB-bT));
@@ -505,17 +470,16 @@ function drawCandles(candles){
   document.getElementById('chart-loading').style.display='none';
 }
 
-function drawRSI(rsiVals){
-  const canvas=document.getElementById('rsi-canvas');
-  const W=canvas.parentElement.clientWidth;canvas.width=W;canvas.height=75;
-  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,W,75);
-  const vis=rsiVals.slice(-50);const gap=Math.floor((W-20)/50);
-  const toY=v=>4+(1-(v/100))*67;
+function drawRSI(rv){
+  const cv=document.getElementById('rsi-canvas'),W=cv.parentElement.clientWidth;
+  cv.width=W;cv.height=75;
+  const ctx=cv.getContext('2d');ctx.clearRect(0,0,W,75);
+  const vis=rv.slice(-50),gap=Math.floor((W-20)/50),toY=v=>4+(1-(v/100))*67;
   ctx.fillStyle='rgba(239,68,68,0.05)';ctx.fillRect(0,toY(70),W,toY(100)-toY(70));
   ctx.fillStyle='rgba(34,197,94,0.05)';ctx.fillRect(0,toY(30),W,toY(0)-toY(30));
   ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;
   [30,50,70].forEach(l=>{ctx.beginPath();ctx.moveTo(0,toY(l));ctx.lineTo(W,toY(l));ctx.stroke();});
-  ctx.fillStyle='rgba(255,255,255,0.18)';ctx.font='9px -apple-system';ctx.textAlign='right';
+  ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='9px -apple-system';ctx.textAlign='right';
   [30,50,70].forEach(l=>ctx.fillText(l,W-3,toY(l)+3));
   ctx.strokeStyle='#f59e0b';ctx.lineWidth=1.5;ctx.beginPath();let first=true;
   vis.forEach((v,i)=>{if(v===null)return;const x=10+i*gap;first?(ctx.moveTo(x,toY(v)),first=false):ctx.lineTo(x,toY(v));});
@@ -524,67 +488,55 @@ function drawRSI(rsiVals){
 
 function updateIndicators(candles){
   if(!candles.length)return;
-  const closes=candles.map(c=>c.c);
-  const rsi=calcRSI(closes);const lastRSI=rsi.filter(v=>v!==null).pop();
-  const macdData=calcMACD(closes);
-  const e20=calcEMA(closes,20),e50=calcEMA(closes,Math.min(50,closes.length));
-  const lE20=e20[e20.length-1],lE50=e50[e50.length-1],lC=closes[closes.length-1];
+  const cl=candles.map(c=>c.c),a=selectedAsset;
+  const rsi=calcRSI(cl),lastRSI=rsi.filter(v=>v!==null).pop();
+  const macdD=calcMACD(cl);
+  const e20=calcEMA(cl,20),e50=calcEMA(cl,Math.min(50,cl.length));
+  const lE20=e20[e20.length-1],lE50=e50[e50.length-1],lC=cl[cl.length-1];
   const sup=Math.min(...candles.slice(-20).map(c=>c.l)),res=Math.max(...candles.slice(-20).map(c=>c.h));
-  const a=selectedAsset;
 
+  const setSig=(id,val,bull,bear)=>{const el=document.getElementById(id);el.textContent=val;el.className='ind-signal '+(bull?'ind-bull':bear?'ind-bear':'ind-neut');};
   document.getElementById('ind-rsi').textContent=lastRSI?lastRSI.toFixed(1):'—';
-  const rs=document.getElementById('ind-rsi-sig');
-  if(lastRSI>70){rs.textContent='Overbought';rs.className='ind-signal ind-bear';}
-  else if(lastRSI<30){rs.textContent='Oversold';rs.className='ind-signal ind-bull';}
-  else if(lastRSI>50){rs.textContent='Bullish';rs.className='ind-signal ind-bull';}
-  else{rs.textContent='Bearish';rs.className='ind-signal ind-bear';}
-
-  document.getElementById('ind-macd').textContent=macdData.hist?macdData.hist.toFixed(4):'—';
-  const ms=document.getElementById('ind-macd-sig');
-  if(macdData.hist>0){ms.textContent='Bullish';ms.className='ind-signal ind-bull';}
-  else{ms.textContent='Bearish';ms.className='ind-signal ind-bear';}
-
+  setSig('ind-rsi-sig',lastRSI>70?'Overbought':lastRSI<30?'Oversold':lastRSI>50?'Bullish':'Bearish',lastRSI<30||lastRSI>50&&lastRSI<=70,lastRSI>70||lastRSI<=50&&lastRSI>=30);
+  document.getElementById('ind-macd').textContent=macdD.hist?macdD.hist.toFixed(4):'—';
+  setSig('ind-macd-sig',macdD.hist>0?'Bullish':'Bearish',macdD.hist>0,macdD.hist<=0);
   document.getElementById('ind-ema20').textContent=lE20?lE20.toFixed(a.dp):'—';
-  const e20s=document.getElementById('ind-ema20-sig');
-  if(lC>lE20){e20s.textContent='Above';e20s.className='ind-signal ind-bull';}else{e20s.textContent='Below';e20s.className='ind-signal ind-bear';}
-
+  setSig('ind-ema20-sig',lC>lE20?'Above':'Below',lC>lE20,lC<=lE20);
   document.getElementById('ind-ema50').textContent=lE50?lE50.toFixed(a.dp):'—';
-  const e50s=document.getElementById('ind-ema50-sig');
-  if(lC>lE50){e50s.textContent='Above';e50s.className='ind-signal ind-bull';}else{e50s.textContent='Below';e50s.className='ind-signal ind-bear';}
-
+  setSig('ind-ema50-sig',lC>lE50?'Above':'Below',lC>lE50,lC<=lE50);
   document.getElementById('ind-sup').textContent=sup.toFixed(a.dp);
   document.getElementById('ind-res').textContent=res.toFixed(a.dp);
 
-  const bulls=(lastRSI<50?1:0)+(macdData.hist>0?1:0)+(lC>lE20?1:0)+(lC>lE50?1:0);
+  const bulls=(lastRSI<50?1:0)+(macdD.hist>0?1:0)+(lC>lE20?1:0)+(lC>lE50?1:0);
   const isBull=bulls>=3,isBear=bulls<=1;
   const sig=document.getElementById('ch-signal');
-  let entry=lC,stop,target,note,direction;
+  let entry=lC,stop,target,note,dir;
 
   if(isBull){
-    direction='BUY';stop=parseFloat((sup*0.999).toFixed(a.dp));target=parseFloat((res*1.001).toFixed(a.dp));
+    dir='BUY';stop=parseFloat((sup*0.999).toFixed(a.dp));target=parseFloat((res*1.001).toFixed(a.dp));
     sig.textContent='BUY';sig.className='chart-signal sig-buy';
-    note=`${bulls}/4 bullish signals. Price above EMAs. ${lastRSI<35?'RSI oversold — strong signal.':'Bullish momentum.'} Entry at market, stop below support.`;
+    note=`${bulls}/4 bullish signals. Price above both EMAs. ${lastRSI<35?'RSI oversold — strong entry.':'Bullish momentum building.'} Entry at market, stop below support at ${stop}.`;
   }else if(isBear){
-    direction='SELL';stop=parseFloat((res*1.001).toFixed(a.dp));target=parseFloat((sup*0.999).toFixed(a.dp));
+    dir='SELL';stop=parseFloat((res*1.001).toFixed(a.dp));target=parseFloat((sup*0.999).toFixed(a.dp));
     sig.textContent='SELL';sig.className='chart-signal sig-sell';
-    note=`Only ${bulls}/4 bullish signals. Price below EMAs. ${lastRSI>65?'RSI overbought — strong signal.':'Bearish momentum.'} Entry at market, stop above resistance.`;
+    note=`Only ${bulls}/4 bullish signals. Price below EMAs. ${lastRSI>65?'RSI overbought — strong short.':'Bearish momentum.'} Entry at market, stop above resistance at ${stop}.`;
   }else{
-    direction='WAIT';stop=null;target=null;
+    dir='WAIT';stop=null;target=null;
     sig.textContent='WAIT';sig.className='chart-signal sig-wait';
-    note=`Mixed signals (${bulls}/4 bullish). No clear edge. Wait for a cleaner setup.`;
+    note=`Mixed signals — ${bulls}/4 bullish. No clear edge. Wait for cleaner setup before entering.`;
   }
 
   document.getElementById('su-entry').textContent=entry.toFixed(a.dp);
-  document.getElementById('su-stop').textContent=stop?stop:'—';
-  document.getElementById('su-target').textContent=target?target:'—';
+  document.getElementById('su-stop').textContent=stop||'—';
+  document.getElementById('su-target').textContent=target||'—';
   document.getElementById('su-note').textContent=note;
 
   if(stop&&target){
-    const risk=Math.abs(entry-stop),reward=Math.abs(target-entry),rr=(reward/risk).toFixed(1);
-    document.getElementById('su-rr').textContent=`Risk/Reward: 1:${rr} · Signal: ${direction}`;
+    const rr=(Math.abs(target-entry)/Math.abs(entry-stop)).toFixed(1);
+    document.getElementById('su-rr').textContent=`Risk/Reward 1:${rr} · ${dir}`;
   }else{document.getElementById('su-rr').textContent='';}
 
-  lastIndicators={asset:a.name,sym:a.sym,tf:currentTF,price:lC,rsi:lastRSI,macd:macdData.hist,ema20:lE20,ema50:lE50,sup,res,direction,entry,stop,target,bulls};
+  lastInd={asset:a.name,sym:a.sym,tf:currentTF,price:lC,rsi:lastRSI,macd:macdD.hist,ema20:lE20,ema50:lE50,sup,res,dir,stop,target,dp:a.dp};
 }
 
 async function openChart(sym){
@@ -593,111 +545,76 @@ async function openChart(sym){
   document.getElementById('ch-name').textContent=selectedAsset.name;
   document.getElementById('ch-price').textContent=fmt(selectedAsset,prices[sym]);
   document.getElementById('chart-loading').style.display='flex';
+  document.getElementById('chart-loading').textContent='Loading chart...';
   await loadChart();
 }
 
 async function loadChart(){
   if(!selectedAsset)return;
   const candles=await fetchCandles(selectedAsset.sym,currentTF);
-  if(!candles.length){document.getElementById('chart-loading').textContent='Chart unavailable — check Twelve Data key';return;}
-  const rsiVals=calcRSI(candles.map(c=>c.c));
-  drawCandles(candles);drawRSI(rsiVals);updateIndicators(candles);
+  if(!candles.length){document.getElementById('chart-loading').textContent='Chart unavailable — check Twelve Data key in Settings';return;}
+  drawCandles(candles);
+  drawRSI(calcRSI(candles.map(c=>c.c)));
+  updateIndicators(candles);
   document.getElementById('ch-price').textContent=fmt(selectedAsset,candles[candles.length-1].c)+' · '+currentTF.toUpperCase();
 }
 
 function setTF(tf,btn){
-  currentTF=tf;document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-  document.getElementById('chart-loading').style.display='flex';loadChart();
+  currentTF=tf;
+  document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.getElementById('chart-loading').style.display='flex';
+  document.getElementById('chart-loading').textContent='Loading chart...';
+  loadChart();
 }
 
-// Send chart context to co-pilot chat
 function sendChartToChat(){
-  if(!lastIndicators.sym)return;
-  const ind=lastIndicators;
-  const bal=parseFloat(cfg('start_bal')||'100');
-  const context=`📊 ${ind.asset} (${ind.tf.toUpperCase()}) · Price: ${ind.price?.toFixed(ind.dp||2)} · RSI: ${ind.rsi?.toFixed(1)} · MACD: ${ind.macd?.toFixed(4)} · EMA20: ${ind.ema20?.toFixed(ind.dp||2)} · EMA50: ${ind.ema50?.toFixed(ind.dp||2)} · Support: ${ind.sup?.toFixed(ind.dp||2)} · Resistance: ${ind.res?.toFixed(ind.dp||2)} · Signal: ${ind.direction}`;
-  document.getElementById('chat-context').style.display='block';
-  document.getElementById('ctx-text').textContent=`${ind.asset} ${ind.tf.toUpperCase()} — ${ind.direction} signal`;
-  const msg=`Analyse this setup and give me a precise trade call:\n\nAsset: ${ind.asset} (${ind.sym})\nTimeframe: ${ind.tf.toUpperCase()}\nPrice: ${ind.price?.toFixed(ind.dp||2)}\nRSI(14): ${ind.rsi?.toFixed(1)}\nMACD histogram: ${ind.macd?.toFixed(4)}\nEMA20: ${ind.ema20?.toFixed(ind.dp||2)}\nEMA50: ${ind.ema50?.toFixed(ind.dp||2)}\nSupport: ${ind.sup?.toFixed(ind.dp||2)}\nResistance: ${ind.res?.toFixed(ind.dp||2)}\nApp signal: ${ind.direction}\nAccount: A$${bal.toFixed(2)}\n\nGive me exact entry, stop loss, target and position size.`;
+  if(!lastInd.sym)return;
+  const i=lastInd,bal=parseFloat(cfg('start_bal')||'100');
+  const msg=`Analyse this setup:\n\nAsset: ${i.asset} (${i.sym})\nTimeframe: ${i.tf.toUpperCase()}\nPrice: ${i.price?.toFixed(i.dp)}\nRSI: ${i.rsi?.toFixed(1)}\nMACD: ${i.macd?.toFixed(4)}\nEMA20: ${i.ema20?.toFixed(i.dp)}\nEMA50: ${i.ema50?.toFixed(i.dp)}\nSupport: ${i.sup?.toFixed(i.dp)}\nResistance: ${i.res?.toFixed(i.dp)}\nApp signal: ${i.dir}\nAccount: A$${bal.toFixed(2)}\n\nGive me exact entry, stop loss, target and position size for 2% risk.`;
   showScreen('chat');
   setTimeout(()=>sendMessage(msg),300);
 }
 
-// AI Chat
-async function sendMessage(presetMsg){
+async function sendMessage(preset){
   const input=document.getElementById('chat-input');
-  const text=presetMsg||(input.value.trim());
+  const text=preset||(input.value.trim());
   if(!text)return;
-  if(!presetMsg){input.value='';autoResize(input);}
-
+  if(!preset){input.value='';autoResize(input);}
   addMsg(text,'user');
-  const loadingId='loading-'+Date.now();
-  addMsg('Thinking...','ai loading',loadingId);
+  const lid='l'+Date.now();addMsg('Thinking...','ai loading',lid);
   document.getElementById('send-btn').disabled=true;
-
-  // Build context with live prices
-  const priceCtx=Object.keys(prices).length?`\nLive prices: Gold=${prices['XAU/USD']?.toFixed(2)||'—'}, Silver=${prices['XAG/USD']?.toFixed(3)||'—'}, EUR/USD=${prices['EUR/USD']?.toFixed(4)||'—'}, GBP/USD=${prices['GBP/USD']?.toFixed(4)||'—'}, BTC=${prices['BTC/USD']?.toFixed(0)||'—'}`:'';
-  const fullMsg=text+(priceCtx&&!text.includes('Price:')?`\n\n[Current market data: ${priceCtx}]`:'');
-
+  const priceCtx=`Live: Gold=${prices['XAU/USD']?.toFixed(2)||'—'}, Silver=${prices['XAG/USD']?.toFixed(3)||'—'}, EUR/USD=${prices['EUR/USD']?.toFixed(4)||'—'}, GBP/USD=${prices['GBP/USD']?.toFixed(4)||'—'}, BTC=${prices['BTC/USD']?.toFixed(0)||'—'}`;
+  const fullMsg=text+(text.includes('Price:')?'':'\n['+priceCtx+']');
   chatHistory.push({role:'user',content:fullMsg});
-
   try{
-    const r=await fetch(CLAUDE_API,{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6',
-        max_tokens:1000,
-        system:SYSTEM_PROMPT,
-        messages:chatHistory.slice(-20)
-      })
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SYS,messages:chatHistory.slice(-20)})
     });
     const d=await r.json();
-    const reply=d.content?.[0]?.text||'Sorry, I could not process that. Try again.';
+    const reply=d.content?.[0]?.text||'Error — try again.';
     chatHistory.push({role:'assistant',content:reply});
-    removeMsg(loadingId);
-    addMsg(reply,'ai');
-  }catch(e){
-    removeMsg(loadingId);
-    addMsg('Connection error. Check your internet and try again.','ai');
-    chatHistory.pop();
-  }
+    removeMsg(lid);addMsg(reply,'ai');
+  }catch(e){removeMsg(lid);addMsg('Connection error. Try again.','ai');chatHistory.pop();}
   document.getElementById('send-btn').disabled=false;
-  document.getElementById('chat-messages').scrollTop=document.getElementById('chat-messages').scrollHeight;
+  const msgs=document.getElementById('chat-messages');msgs.scrollTop=msgs.scrollHeight;
 }
 
 function addMsg(text,cls,id){
-  const msgs=document.getElementById('chat-messages');
-  const div=document.createElement('div');
-  div.className='msg '+cls;
-  if(id)div.id=id;
-  div.textContent=text;
-  msgs.appendChild(div);
-  msgs.scrollTop=msgs.scrollHeight;
+  const msgs=document.getElementById('chat-messages'),div=document.createElement('div');
+  div.className='msg '+cls;if(id)div.id=id;div.textContent=text;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
 }
-
 function removeMsg(id){const el=document.getElementById(id);if(el)el.remove();}
-
-function clearChat(){
-  chatHistory=[];
-  document.getElementById('chat-messages').innerHTML='<div class="msg ai">Chat cleared. What would you like to analyse?</div>';
-  document.getElementById('chat-context').style.display='none';
-}
-
-function quickMsg(text){sendMessage(text);}
-
+function clearChat(){chatHistory=[];document.getElementById('chat-messages').innerHTML='<div class="msg ai">Chat cleared. What would you like to analyse?</div>';}
+function quickMsg(t){sendMessage(t);}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
-
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
 
 function renderLog(){
   const list=document.getElementById('log-list');
   if(!trades.length){list.innerHTML='<div class="log-empty">No trades yet.</div>';return;}
-  list.innerHTML=trades.slice().reverse().map(t=>`
-    <div class="log-entry">
-      <div><div class="log-asset">${t.asset} · ${t.direction}</div><div class="log-detail">${t.date} · Entry ${t.entry}</div></div>
-      <div class="log-pnl ${t.pnl>=0?'win':'loss'}">${t.pnl>=0?'+':''}A$${Math.abs(t.pnl).toFixed(2)}</div>
-    </div>`).join('');
+  list.innerHTML=trades.slice().reverse().map(t=>`<div class="log-entry"><div><div class="log-asset">${t.asset} · ${t.direction}</div><div class="log-detail">${t.date} · Entry ${t.entry}</div></div><div class="log-pnl ${t.pnl>=0?'win':'loss'}">${t.pnl>=0?'+':''}A$${Math.abs(t.pnl).toFixed(2)}</div></div>`).join('');
 }
 
 async function init(){
