@@ -12,88 +12,103 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
   :root {
-    --bg: #0a0a0a; --bg2: #141414; --bg3: #1e1e1e;
-    --border: rgba(255,255,255,0.08);
-    --text: #f0f0f0; --text2: #888; --text3: #444;
-    --green: #22c55e; --red: #ef4444; --blue: #3b82f6; --gold: #f59e0b;
+    --bg:#0a0a0a;--bg2:#141414;--bg3:#1e1e1e;
+    --border:rgba(255,255,255,0.08);
+    --text:#f0f0f0;--text2:#888;--text3:#444;
+    --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--gold:#f59e0b;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; min-height: 100vh; }
-  .app { max-width: 430px; margin: 0 auto; padding-bottom: 90px; }
-  .header { padding: 52px 20px 12px; display: flex; justify-content: space-between; align-items: flex-end; }
-  .header-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
-  .header-title span { color: var(--gold); }
-  .live-pill { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; padding: 4px 10px; }
-  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
-  .live-dot.off { background: var(--red); animation: none; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
-  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 20px 20px; }
-  .stat-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 14px 16px; }
-  .stat-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
-  .stat-value { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
-  .positive { color: var(--green); } .negative { color: var(--red); }
-  .section-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 20px; margin-bottom: 10px; }
-  .conn-bar { margin: 0 20px 14px; padding: 10px 14px; border-radius: 12px; font-size: 12px; display: flex; align-items: center; gap: 8px; }
-  .conn-bar.ok { background: rgba(34,197,94,0.08); border: 0.5px solid rgba(34,197,94,0.2); color: var(--green); }
-  .conn-bar.err { background: rgba(239,68,68,0.08); border: 0.5px solid rgba(239,68,68,0.2); color: var(--red); }
-  .conn-bar.loading { background: var(--bg2); border: 0.5px solid var(--border); color: var(--text2); }
-  .assets { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 8px; }
-  .asset-row { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 14px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: transform 0.1s; }
-  .asset-row:active { transform: scale(0.99); background: var(--bg3); }
-  .asset-row.selected { border-color: var(--blue); background: rgba(59,130,246,0.06); }
-  .asset-left { display: flex; align-items: center; gap: 12px; }
-  .asset-icon { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; background: var(--bg3); }
-  .asset-name { font-size: 15px; font-weight: 600; }
-  .asset-symbol { font-size: 11px; color: var(--text2); margin-top: 2px; }
-  .asset-right { text-align: right; }
-  .asset-price { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .asset-change { font-size: 12px; font-weight: 500; margin-top: 2px; }
-  .up { color: var(--green); } .down { color: var(--red); } .flat { color: var(--text2); }
-  .refresh-row { display: flex; justify-content: space-between; align-items: center; padding: 0 20px 10px; }
-  .refresh-time { font-size: 11px; color: var(--text3); }
-  .refresh-btn { font-size: 12px; color: var(--blue); background: none; border: none; cursor: pointer; }
-  .positions-box { margin: 0 20px 20px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; overflow: hidden; }
-  .position-row { padding: 12px 16px; border-bottom: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .position-row:last-child { border-bottom: none; }
-  .pos-name { font-size: 14px; font-weight: 600; }
-  .pos-detail { font-size: 11px; color: var(--text2); margin-top: 2px; }
-  .pos-pnl { font-size: 15px; font-weight: 600; }
-  .pos-empty { padding: 20px 16px; text-align: center; font-size: 13px; color: var(--text3); }
-  .analysis { margin: 0 20px 20px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; overflow: hidden; }
-  .analysis-header { padding: 16px 18px 14px; border-bottom: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .analysis-name { font-size: 16px; font-weight: 600; }
-  .analysis-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
-  .signal-pill { font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
-  .signal-buy { background: rgba(34,197,94,0.15); color: var(--green); }
-  .signal-sell { background: rgba(239,68,68,0.15); color: var(--red); }
-  .signal-wait { background: var(--bg3); color: var(--text2); }
-  .levels { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 14px 18px; gap: 8px; }
-  .level { text-align: center; }
-  .level-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
-  .level-val { font-size: 14px; font-weight: 600; }
-  .entry-val { color: var(--blue); } .stop-val { color: var(--red); } .target-val { color: var(--green); }
-  .analysis-note { font-size: 13px; color: var(--text2); line-height: 1.6; padding: 0 18px 14px; }
-  .analyse-btn { margin: 0 18px 18px; width: calc(100% - 36px); padding: 13px; background: var(--blue); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
-  .analyse-btn:active { opacity: 0.8; transform: scale(0.98); }
-  .log { margin: 0 20px 20px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; overflow: hidden; }
-  .log-entry { padding: 14px 18px; border-bottom: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .log-entry:last-child { border-bottom: none; }
-  .log-empty { padding: 24px 18px; text-align: center; font-size: 13px; color: var(--text3); }
-  .log-asset { font-size: 14px; font-weight: 600; }
-  .log-detail { font-size: 12px; color: var(--text2); margin-top: 2px; }
-  .log-pnl { font-size: 15px; font-weight: 600; }
-  .win { color: var(--green); } .loss { color: var(--red); }
-  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.96); backdrop-filter: blur(20px); border-top: 0.5px solid var(--border); padding: 10px 0 28px; display: flex; justify-content: space-around; z-index: 100; }
-  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 4px 20px; }
-  .nav-icon { font-size: 20px; }
-  .nav-label { font-size: 10px; color: var(--text2); }
-  .nav-item.active .nav-label { color: var(--blue); }
-  .skeleton { background: linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 14px; height: 60px; margin: 0 20px 8px; }
-  @keyframes shimmer { 0%{background-position:200% 0}100%{background-position:-200% 0} }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;min-height:100vh;}
+  .app{max-width:430px;margin:0 auto;padding-bottom:90px;}
+  .header{padding:52px 20px 12px;display:flex;justify-content:space-between;align-items:flex-end;}
+  .header-title{font-size:26px;font-weight:700;letter-spacing:-0.5px;}
+  .header-title span{color:var(--gold);}
+  .live-pill{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);background:var(--bg2);border:0.5px solid var(--border);border-radius:20px;padding:4px 10px;}
+  .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+  .live-dot.off{background:var(--red);animation:none;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 20px;}
+  .stat-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;padding:14px 16px;}
+  .stat-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+  .stat-value{font-size:22px;font-weight:600;letter-spacing:-0.5px;}
+  .positive{color:var(--green);}.negative{color:var(--red);}
+  .section-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;padding:0 20px;margin-bottom:10px;}
+  .conn-bar{margin:0 20px 14px;padding:10px 14px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:8px;}
+  .conn-bar.ok{background:rgba(34,197,94,0.08);border:0.5px solid rgba(34,197,94,0.2);color:var(--green);}
+  .conn-bar.err{background:rgba(239,68,68,0.08);border:0.5px solid rgba(239,68,68,0.2);color:var(--red);}
+  .conn-bar.loading{background:var(--bg2);border:0.5px solid var(--border);color:var(--text2);}
+  .assets{padding:0 20px 20px;display:flex;flex-direction:column;gap:8px;}
+  .asset-row{background:var(--bg2);border:0.5px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+  .asset-row:active{background:var(--bg3);transform:scale(0.99);}
+  .asset-row.selected{border-color:var(--blue);background:rgba(59,130,246,0.06);}
+  .asset-left{display:flex;align-items:center;gap:12px;}
+  .asset-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--bg3);}
+  .asset-name{font-size:15px;font-weight:600;}
+  .asset-symbol{font-size:11px;color:var(--text2);margin-top:2px;}
+  .asset-right{text-align:right;}
+  .asset-price{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;}
+  .asset-change{font-size:12px;font-weight:500;margin-top:2px;}
+  .up{color:var(--green);}.down{color:var(--red);}.flat{color:var(--text2);}
+  .refresh-row{display:flex;justify-content:space-between;align-items:center;padding:0 20px 10px;}
+  .refresh-time{font-size:11px;color:var(--text3);}
+  .refresh-btn{font-size:12px;color:var(--blue);background:none;border:none;cursor:pointer;}
+  .positions-box{margin:0 20px 20px;background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;overflow:hidden;}
+  .position-row{padding:12px 16px;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .position-row:last-child{border-bottom:none;}
+  .pos-name{font-size:14px;font-weight:600;}
+  .pos-detail{font-size:11px;color:var(--text2);margin-top:2px;}
+  .pos-pnl{font-size:15px;font-weight:600;}
+  .pos-empty{padding:20px 16px;text-align:center;font-size:13px;color:var(--text3);}
+  .analysis{margin:0 20px 20px;background:var(--bg2);border:0.5px solid var(--border);border-radius:20px;overflow:hidden;}
+  .analysis-header{padding:16px 18px 14px;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .analysis-name{font-size:16px;font-weight:600;}
+  .analysis-sub{font-size:12px;color:var(--text2);margin-top:2px;}
+  .signal-pill{font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;}
+  .signal-wait{background:var(--bg3);color:var(--text2);}
+  .levels{display:grid;grid-template-columns:1fr 1fr 1fr;padding:14px 18px;gap:8px;}
+  .level{text-align:center;}
+  .level-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;}
+  .level-val{font-size:14px;font-weight:600;}
+  .entry-val{color:var(--blue);}.stop-val{color:var(--red);}.target-val{color:var(--green);}
+  .analysis-note{font-size:13px;color:var(--text2);line-height:1.6;padding:0 18px 14px;}
+  .analyse-btn{margin:0 18px 18px;width:calc(100% - 36px);padding:13px;background:var(--blue);color:white;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;}
+  .analyse-btn:active{opacity:0.8;transform:scale(0.98);}
+  .log{margin:0 20px 20px;background:var(--bg2);border:0.5px solid var(--border);border-radius:20px;overflow:hidden;}
+  .log-entry{padding:14px 18px;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .log-entry:last-child{border-bottom:none;}
+  .log-empty{padding:24px 18px;text-align:center;font-size:13px;color:var(--text3);}
+  .log-asset{font-size:14px;font-weight:600;}
+  .log-detail{font-size:12px;color:var(--text2);margin-top:2px;}
+  .log-pnl{font-size:15px;font-weight:600;}
+  .win{color:var(--green);}.loss{color:var(--red);}
+  /* Settings screen */
+  .screen{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;overflow-y:auto;padding-bottom:90px;}
+  .screen.active{display:block;}
+  .screen-header{padding:52px 20px 20px;display:flex;align-items:center;gap:12px;}
+  .back-btn{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:6px 12px;font-size:13px;color:var(--text);cursor:pointer;}
+  .screen-title{font-size:20px;font-weight:700;}
+  .settings-group{margin:0 20px 20px;background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;overflow:hidden;}
+  .settings-row{padding:14px 16px;border-bottom:0.5px solid var(--border);}
+  .settings-row:last-child{border-bottom:none;}
+  .settings-label{font-size:12px;color:var(--text2);margin-bottom:6px;}
+  .settings-input{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;color:var(--text);outline:none;}
+  .settings-input:focus{border-color:var(--blue);}
+  .save-btn{margin:0 20px;width:calc(100% - 40px);padding:14px;background:var(--blue);color:white;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;}
+  .save-btn:active{opacity:0.8;}
+  .settings-note{margin:12px 20px 0;font-size:12px;color:var(--text3);line-height:1.5;}
+  .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,10,0.96);backdrop-filter:blur(20px);border-top:0.5px solid var(--border);padding:10px 0 28px;display:flex;justify-content:space-around;z-index:100;}
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 20px;}
+  .nav-icon{font-size:20px;}
+  .nav-label{font-size:10px;color:var(--text2);}
+  .nav-item.active .nav-label{color:var(--blue);}
+  .skeleton{background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:14px;height:60px;}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 </style>
 </head>
 <body>
-<div class="app">
+
+<!-- Main screen -->
+<div class="app" id="main-screen">
   <div class="header">
     <div class="header-title">Trade<span>AI</span></div>
     <div class="live-pill">
@@ -155,28 +170,87 @@
   </div>
 </div>
 
+<!-- Settings screen -->
+<div class="screen" id="settings-screen">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('main')">← Back</button>
+    <div class="screen-title">Settings</div>
+  </div>
+  <div class="settings-group">
+    <div class="settings-row">
+      <div class="settings-label">Capital.com API Key</div>
+      <input class="settings-input" id="cfg-apikey" type="password" placeholder="Your API key">
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">Capital.com Email</div>
+      <input class="settings-input" id="cfg-email" type="email" placeholder="your@email.com">
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">Capital.com Password</div>
+      <input class="settings-input" id="cfg-pass" type="password" placeholder="Your password">
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">Twelve Data API Key</div>
+      <input class="settings-input" id="cfg-twelve" type="password" placeholder="Backup price API key">
+    </div>
+  </div>
+  <button class="save-btn" onclick="saveSettings()">Save & Connect</button>
+  <div class="settings-note">🔒 Your credentials are stored only on this device. They are never sent to GitHub or any third party server.</div>
+</div>
+
+<!-- Bottom nav -->
 <div class="bottom-nav">
-  <div class="nav-item active"><div class="nav-icon">📊</div><div class="nav-label">Markets</div></div>
-  <div class="nav-item"><div class="nav-icon">💼</div><div class="nav-label">Positions</div></div>
-  <div class="nav-item"><div class="nav-icon">📋</div><div class="nav-label">Log</div></div>
-  <div class="nav-item"><div class="nav-icon">⚙️</div><div class="nav-label">Settings</div></div>
+  <div class="nav-item active" id="nav-markets" onclick="showScreen('main')"><div class="nav-icon">📊</div><div class="nav-label">Markets</div></div>
+  <div class="nav-item" id="nav-positions" onclick="showScreen('main')"><div class="nav-icon">💼</div><div class="nav-label">Positions</div></div>
+  <div class="nav-item" id="nav-log" onclick="showScreen('main')"><div class="nav-icon">📋</div><div class="nav-label">Log</div></div>
+  <div class="nav-item" id="nav-settings" onclick="showScreen('settings')"><div class="nav-icon">⚙️</div><div class="nav-label">Settings</div></div>
 </div>
 
 <script>
 const CAP_API = 'https://api-capital.backend.capital.com';
-const API_KEY = '3gr9vIezZddUBLSi';
-const EMAIL = 'nasrudean.abdullahi@gmail.com';
-const PASS = 'Nasr8166$';
-const TWELVE_KEY = '0d8660d8c78e4401ae868c982a47506c';
-
 const ASSETS = [
-  { symbol: 'XAU/USD', epic: 'GOLD', name: 'Gold', icon: '🥇' },
-  { symbol: 'XAG/USD', epic: 'SILVER', name: 'Silver', icon: '🥈' },
-  { symbol: 'XPT/USD', epic: 'PLATINUM', name: 'Platinum', icon: '⬜' },
-  { symbol: 'EUR/USD', epic: 'EURUSD', name: 'EUR/USD', icon: '💶' },
-  { symbol: 'GBP/USD', epic: 'GBPUSD', name: 'GBP/USD', icon: '💷' },
-  { symbol: 'BTC/USD', epic: 'BITCOIN', name: 'Bitcoin', icon: '₿' },
+  {symbol:'XAU/USD',epic:'GOLD',name:'Gold',icon:'🥇'},
+  {symbol:'XAG/USD',epic:'SILVER',name:'Silver',icon:'🥈'},
+  {symbol:'XPT/USD',epic:'PLATINUM',name:'Platinum',icon:'⬜'},
+  {symbol:'EUR/USD',epic:'EURUSD',name:'EUR/USD',icon:'💶'},
+  {symbol:'GBP/USD',epic:'GBPUSD',name:'GBP/USD',icon:'💷'},
+  {symbol:'BTC/USD',epic:'BITCOIN',name:'Bitcoin',icon:'₿'},
 ];
+
+// Load credentials from localStorage only
+function getCreds() {
+  return {
+    apiKey: localStorage.getItem('cap_apikey') || '',
+    email: localStorage.getItem('cap_email') || '',
+    pass: localStorage.getItem('cap_pass') || '',
+    twelveKey: localStorage.getItem('twelve_key') || ''
+  };
+}
+
+function saveSettings() {
+  localStorage.setItem('cap_apikey', document.getElementById('cfg-apikey').value);
+  localStorage.setItem('cap_email', document.getElementById('cfg-email').value);
+  localStorage.setItem('cap_pass', document.getElementById('cfg-pass').value);
+  localStorage.setItem('twelve_key', document.getElementById('cfg-twelve').value);
+  showScreen('main');
+  init();
+}
+
+function loadSettingsUI() {
+  const c = getCreds();
+  document.getElementById('cfg-apikey').value = c.apiKey;
+  document.getElementById('cfg-email').value = c.email;
+  document.getElementById('cfg-pass').value = c.pass;
+  document.getElementById('cfg-twelve').value = c.twelveKey;
+}
+
+function showScreen(name) {
+  document.getElementById('main-screen').style.display = name === 'main' ? 'block' : 'none';
+  document.getElementById('settings-screen').className = name === 'settings' ? 'screen active' : 'screen';
+  if (name === 'settings') loadSettingsUI();
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('nav-' + (name === 'main' ? 'markets' : name)).classList.add('active');
+}
 
 let cst = null, secToken = null;
 let prices = {}, prevPrices = {}, selected = null;
@@ -194,37 +268,36 @@ function fmt(sym, p) {
 function pct(sym) {
   const c = prices[sym], p = prevPrices[sym];
   if (!c || !p) return null;
-  return ((c - p) / p) * 100;
+  return ((c-p)/p)*100;
 }
 
 async function capitalSession() {
+  const {apiKey, email, pass} = getCreds();
+  if (!apiKey || !email || !pass) {
+    document.getElementById('conn-bar').className = 'conn-bar err';
+    document.getElementById('conn-bar').textContent = '⚙️ Tap Settings to enter your Capital.com credentials';
+    return false;
+  }
   try {
     const r = await fetch(`${CAP_API}/api/v1/session`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CAP-API-KEY': API_KEY },
-      body: JSON.stringify({ identifier: EMAIL, password: PASS })
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-CAP-API-KEY':apiKey},
+      body:JSON.stringify({identifier:email, password:pass})
     });
-    const h = r.headers;
-    cst = h.get('CST');
-    secToken = h.get('X-SECURITY-TOKEN');
+    cst = r.headers.get('CST');
+    secToken = r.headers.get('X-SECURITY-TOKEN');
     const d = await r.json();
     if (cst && secToken) {
       document.getElementById('conn-bar').className = 'conn-bar ok';
-      document.getElementById('conn-bar').textContent = '✅ Connected to Capital.com · ' + (d.accountType || '');
+      document.getElementById('conn-bar').textContent = '✅ Connected to Capital.com';
       document.getElementById('live-dot').className = 'live-dot';
       document.getElementById('live-text').textContent = 'Live';
-      if (d.dealingEnabled !== undefined) {
-        accountBalance = d.hasActiveDemoAccounts ? 0 : 0;
-      }
-      await fetchAccount();
-      await fetchPositions();
       return true;
-    } else {
-      throw new Error('No session tokens');
     }
+    throw new Error('No tokens');
   } catch(e) {
     document.getElementById('conn-bar').className = 'conn-bar err';
-    document.getElementById('conn-bar').textContent = '⚠️ Capital.com connection failed — using backup prices';
+    document.getElementById('conn-bar').textContent = '⚠️ Connection failed — using backup prices';
     document.getElementById('live-dot').className = 'live-dot off';
     document.getElementById('live-text').textContent = 'Backup';
     return false;
@@ -233,12 +306,13 @@ async function capitalSession() {
 
 async function fetchAccount() {
   if (!cst) return;
+  const {apiKey} = getCreds();
   try {
     const r = await fetch(`${CAP_API}/api/v1/accounts`, {
-      headers: { 'CST': cst, 'X-SECURITY-TOKEN': secToken, 'X-CAP-API-KEY': API_KEY }
+      headers:{'CST':cst,'X-SECURITY-TOKEN':secToken,'X-CAP-API-KEY':apiKey}
     });
     const d = await r.json();
-    if (d.accounts && d.accounts.length > 0) {
+    if (d.accounts?.length > 0) {
       const acc = d.accounts[0];
       accountBalance = acc.balance?.balance || 0;
       openPnl = acc.balance?.profitLoss || 0;
@@ -247,18 +321,19 @@ async function fetchAccount() {
       pnlEl.textContent = (openPnl >= 0 ? '+' : '') + 'A$' + Math.abs(openPnl).toFixed(2);
       pnlEl.className = 'stat-value ' + (openPnl > 0 ? 'positive' : openPnl < 0 ? 'negative' : '');
     }
-  } catch(e) { console.log('Account fetch failed', e); }
+  } catch(e) {}
 }
 
 async function fetchPositions() {
   if (!cst) return;
+  const {apiKey} = getCreds();
   try {
     const r = await fetch(`${CAP_API}/api/v1/positions`, {
-      headers: { 'CST': cst, 'X-SECURITY-TOKEN': secToken, 'X-CAP-API-KEY': API_KEY }
+      headers:{'CST':cst,'X-SECURITY-TOKEN':secToken,'X-CAP-API-KEY':apiKey}
     });
     const d = await r.json();
     const box = document.getElementById('positions-box');
-    if (d.positions && d.positions.length > 0) {
+    if (d.positions?.length > 0) {
       box.innerHTML = d.positions.map(p => {
         const pnl = p.position?.upl || 0;
         const dir = p.position?.direction || '—';
@@ -266,34 +341,30 @@ async function fetchPositions() {
         const name = p.market?.instrumentName || p.market?.epic || '—';
         const level = p.position?.level || '—';
         return `<div class="position-row">
-          <div>
-            <div class="pos-name">${name} · ${dir}</div>
-            <div class="pos-detail">Size: ${size} · Entry: ${level}</div>
-          </div>
+          <div><div class="pos-name">${name} · ${dir}</div><div class="pos-detail">Size: ${size} · Entry: ${level}</div></div>
           <div class="pos-pnl ${pnl >= 0 ? 'win' : 'loss'}">${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}</div>
         </div>`;
       }).join('');
     } else {
       box.innerHTML = '<div class="pos-empty">No open positions</div>';
     }
-  } catch(e) { console.log('Positions fetch failed', e); }
+  } catch(e) {}
 }
 
 async function fetchCapitalPrices() {
   if (!cst) return false;
+  const {apiKey} = getCreds();
   try {
     const epics = ASSETS.map(a => a.epic).join(',');
     const r = await fetch(`${CAP_API}/api/v1/markets?epics=${epics}`, {
-      headers: { 'CST': cst, 'X-SECURITY-TOKEN': secToken, 'X-CAP-API-KEY': API_KEY }
+      headers:{'CST':cst,'X-SECURITY-TOKEN':secToken,'X-CAP-API-KEY':apiKey}
     });
     const d = await r.json();
     if (d.marketDetails) {
       prevPrices = {...prices};
       d.marketDetails.forEach(m => {
         const asset = ASSETS.find(a => a.epic === m.instrument?.epic);
-        if (asset && m.snapshot?.bid) {
-          prices[asset.symbol] = (m.snapshot.bid + m.snapshot.offer) / 2;
-        }
+        if (asset && m.snapshot?.bid) prices[asset.symbol] = (m.snapshot.bid + m.snapshot.offer) / 2;
       });
       return true;
     }
@@ -302,15 +373,17 @@ async function fetchCapitalPrices() {
 }
 
 async function fetchBackupPrices() {
+  const {twelveKey} = getCreds();
+  if (!twelveKey) return;
   try {
     prevPrices = {...prices};
     const results = await Promise.all(ASSETS.map(async a => {
-      const r = await fetch(`https://api.twelvedata.com/price?symbol=${encodeURIComponent(a.symbol)}&apikey=${TWELVE_KEY}`);
+      const r = await fetch(`https://api.twelvedata.com/price?symbol=${encodeURIComponent(a.symbol)}&apikey=${twelveKey}`);
       const d = await r.json();
       return d.price ? parseFloat(d.price) : null;
     }));
     ASSETS.forEach((a,i) => { if (results[i]) prices[a.symbol] = results[i]; });
-  } catch(e) { console.log('Backup prices failed', e); }
+  } catch(e) {}
 }
 
 async function refresh() {
@@ -320,14 +393,14 @@ async function refresh() {
   if (cst) { await fetchAccount(); await fetchPositions(); }
   renderAssets();
   const now = new Date();
-  document.getElementById('refresh-time').textContent = 'Updated ' + now.toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'});
+  document.getElementById('refresh-time').textContent = 'Updated ' + now.toLocaleTimeString('en-AU', {hour:'2-digit',minute:'2-digit'});
   document.getElementById('live-text').textContent = cst ? 'Live' : 'Backup';
 }
 
 function renderAssets() {
   const list = document.getElementById('assets-list');
   if (!Object.keys(prices).length) {
-    list.innerHTML = '<div style="text-align:center;color:#444;padding:20px;font-size:13px;">Unable to load — tap refresh</div>';
+    list.innerHTML = '<div style="text-align:center;color:#444;padding:20px;font-size:13px;">No prices — tap refresh or check settings</div>';
     return;
   }
   list.innerHTML = ASSETS.map(a => {
@@ -364,10 +437,10 @@ function selectAsset(sym) {
 function askCopilot() {
   const p = selected ? prices[selected.symbol] : null;
   const sym = selected ? selected.symbol : null;
-  const posText = accountBalance > 0 ? `Account balance: A$${accountBalance.toFixed(2)}.` : 'Account: A$100.';
+  const balText = accountBalance > 0 ? `A$${accountBalance.toFixed(2)}` : 'A$100';
   const msg = selected
-    ? `I'm looking at ${selected.name} (${sym}). Current price: ${fmt(sym, p)}. ${posText} Give me a complete trade setup: buy or sell, entry, stop loss, take profit, and position size for 2% max risk. Islamic account — intraday only.`
-    : `Analyse the current market. Gold: ${fmt('XAU/USD', prices['XAU/USD'])}, Silver: ${fmt('XAG/USD', prices['XAG/USD'])}, EUR/USD: ${fmt('EUR/USD', prices['EUR/USD'])}. ${posText} What's the best trade right now and why?`;
+    ? `I'm looking at ${selected.name} (${sym}). Current price: ${fmt(sym, p)}. Account balance: ${balText}. Give me a complete trade setup: buy or sell, entry, stop loss, take profit, and position size for 2% max risk. Islamic account — intraday only, no overnight positions.`
+    : `Analyse the current market. Gold: ${fmt('XAU/USD', prices['XAU/USD'])}, Silver: ${fmt('XAG/USD', prices['XAG/USD'])}, EUR/USD: ${fmt('EUR/USD', prices['EUR/USD'])}. Account: ${balText}. What's the best trade right now and why?`;
   window.open(`https://claude.ai/new?q=${encodeURIComponent(msg)}`, '_blank');
 }
 
@@ -382,8 +455,9 @@ function renderLog() {
 }
 
 async function init() {
+  cst = null; secToken = null;
   renderLog();
-  await capitalSession();
+  const connected = await capitalSession();
   await refresh();
   setInterval(refresh, 30000);
 }
