@@ -20,45 +20,26 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; min-height: 100vh; }
   .app { max-width: 430px; margin: 0 auto; padding-bottom: 90px; }
-
   .header { padding: 52px 20px 12px; display: flex; justify-content: space-between; align-items: flex-end; }
   .header-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
   .header-title span { color: var(--gold); }
   .live-pill { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; padding: 4px 10px; }
   .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  .live-dot.off { background: var(--red); animation: none; }
   @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
-
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 20px 20px; }
   .stat-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 14px 16px; }
   .stat-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
   .stat-value { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
   .positive { color: var(--green); } .negative { color: var(--red); }
-
   .section-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 20px; margin-bottom: 10px; }
-
-  /* Alert banner */
-  .alert-banner { margin: 0 20px 16px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 14px; padding: 12px 16px; display: none; }
-  .alert-banner.visible { display: block; }
-  .alert-banner.buy { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.06); }
-  .alert-banner.sell { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.06); }
-  .alert-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .alert-title { font-size: 13px; font-weight: 600; }
-  .alert-time { font-size: 11px; color: var(--text2); }
-  .alert-msg { font-size: 12px; color: var(--text2); line-height: 1.5; }
-
-  /* TradingView feed */
-  .tv-feed { margin: 0 20px 20px; }
-  .tv-entry { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
-  .tv-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
-  .tv-asset { font-size: 13px; font-weight: 600; }
-  .tv-time { font-size: 11px; color: var(--text3); }
-  .tv-msg { font-size: 12px; color: var(--text2); line-height: 1.5; }
-  .tv-price { font-size: 13px; font-weight: 600; color: var(--gold); margin-top: 4px; }
-  .tv-empty { text-align: center; font-size: 13px; color: var(--text3); padding: 20px 0; }
-
+  .conn-bar { margin: 0 20px 14px; padding: 10px 14px; border-radius: 12px; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+  .conn-bar.ok { background: rgba(34,197,94,0.08); border: 0.5px solid rgba(34,197,94,0.2); color: var(--green); }
+  .conn-bar.err { background: rgba(239,68,68,0.08); border: 0.5px solid rgba(239,68,68,0.2); color: var(--red); }
+  .conn-bar.loading { background: var(--bg2); border: 0.5px solid var(--border); color: var(--text2); }
   .assets { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 8px; }
-  .asset-row { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 14px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-  .asset-row:active { background: var(--bg3); transform: scale(0.99); }
+  .asset-row { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 14px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: transform 0.1s; }
+  .asset-row:active { transform: scale(0.99); background: var(--bg3); }
   .asset-row.selected { border-color: var(--blue); background: rgba(59,130,246,0.06); }
   .asset-left { display: flex; align-items: center; gap: 12px; }
   .asset-icon { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; background: var(--bg3); }
@@ -68,11 +49,16 @@
   .asset-price { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .asset-change { font-size: 12px; font-weight: 500; margin-top: 2px; }
   .up { color: var(--green); } .down { color: var(--red); } .flat { color: var(--text2); }
-
   .refresh-row { display: flex; justify-content: space-between; align-items: center; padding: 0 20px 10px; }
   .refresh-time { font-size: 11px; color: var(--text3); }
   .refresh-btn { font-size: 12px; color: var(--blue); background: none; border: none; cursor: pointer; }
-
+  .positions-box { margin: 0 20px 20px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .position-row { padding: 12px 16px; border-bottom: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .position-row:last-child { border-bottom: none; }
+  .pos-name { font-size: 14px; font-weight: 600; }
+  .pos-detail { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .pos-pnl { font-size: 15px; font-weight: 600; }
+  .pos-empty { padding: 20px 16px; text-align: center; font-size: 13px; color: var(--text3); }
   .analysis { margin: 0 20px 20px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; overflow: hidden; }
   .analysis-header { padding: 16px 18px 14px; border-bottom: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
   .analysis-name { font-size: 16px; font-weight: 600; }
@@ -89,7 +75,6 @@
   .analysis-note { font-size: 13px; color: var(--text2); line-height: 1.6; padding: 0 18px 14px; }
   .analyse-btn { margin: 0 18px 18px; width: calc(100% - 36px); padding: 13px; background: var(--blue); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
   .analyse-btn:active { opacity: 0.8; transform: scale(0.98); }
-
   .log { margin: 0 20px 20px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; overflow: hidden; }
   .log-entry { padding: 14px 18px; border-bottom: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
   .log-entry:last-child { border-bottom: none; }
@@ -98,19 +83,13 @@
   .log-detail { font-size: 12px; color: var(--text2); margin-top: 2px; }
   .log-pnl { font-size: 15px; font-weight: 600; }
   .win { color: var(--green); } .loss { color: var(--red); }
-
   .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.96); backdrop-filter: blur(20px); border-top: 0.5px solid var(--border); padding: 10px 0 28px; display: flex; justify-content: space-around; z-index: 100; }
   .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 4px 20px; }
   .nav-icon { font-size: 20px; }
   .nav-label { font-size: 10px; color: var(--text2); }
   .nav-item.active .nav-label { color: var(--blue); }
-
-  .skeleton { background: linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 14px; height: 60px; }
+  .skeleton { background: linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 14px; height: 60px; margin: 0 20px 8px; }
   @keyframes shimmer { 0%{background-position:200% 0}100%{background-position:-200% 0} }
-
-  .connection-status { margin: 0 20px 16px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); }
-  .conn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
-  .conn-dot.disconnected { background: var(--red); }
 </style>
 </head>
 <body>
@@ -118,46 +97,33 @@
   <div class="header">
     <div class="header-title">Trade<span>AI</span></div>
     <div class="live-pill">
-      <div class="live-dot"></div>
+      <div class="live-dot" id="live-dot"></div>
       <span id="live-text">Connecting...</span>
     </div>
   </div>
 
   <div class="stats">
     <div class="stat-card">
-      <div class="stat-label">Account</div>
-      <div class="stat-value" id="stat-account">A$100.00</div>
+      <div class="stat-label">Balance</div>
+      <div class="stat-value" id="stat-account">—</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">P&L Today</div>
-      <div class="stat-value" id="stat-pnl">A$0.00</div>
+      <div class="stat-label">Open P&L</div>
+      <div class="stat-value" id="stat-pnl">—</div>
     </div>
   </div>
 
-  <!-- TradingView Alert Banner -->
-  <div class="alert-banner" id="alert-banner">
-    <div class="alert-top">
-      <div class="alert-title" id="alert-title">🔔 New Alert</div>
-      <div class="alert-time" id="alert-time"></div>
-    </div>
-    <div class="alert-msg" id="alert-msg"></div>
+  <div class="conn-bar loading" id="conn-bar">⏳ Connecting to Capital.com...</div>
+
+  <div class="section-label">Open positions</div>
+  <div class="positions-box" id="positions-box">
+    <div class="pos-empty">No open positions</div>
   </div>
 
-  <!-- TradingView Feed -->
-  <div class="section-label">TradingView alerts</div>
-  <div class="connection-status">
-    <div class="conn-dot" id="conn-dot"></div>
-    <span id="conn-text">Connecting to alert server...</span>
-  </div>
-  <div class="tv-feed" id="tv-feed">
-    <div class="tv-empty">No alerts yet. Set up TradingView alerts to see them here.</div>
-  </div>
-
-  <!-- Watchlist -->
   <div class="section-label">Live prices</div>
   <div class="refresh-row">
     <div class="refresh-time" id="refresh-time">Loading...</div>
-    <button class="refresh-btn" onclick="fetchAll()">↻ Refresh</button>
+    <button class="refresh-btn" onclick="refresh()">↻ Refresh</button>
   </div>
   <div class="assets" id="assets-list">
     <div class="skeleton"></div>
@@ -165,7 +131,6 @@
     <div class="skeleton"></div>
   </div>
 
-  <!-- Analysis -->
   <div class="section-label">Trade setup</div>
   <div class="analysis">
     <div class="analysis-header">
@@ -180,11 +145,10 @@
       <div class="level"><div class="level-label">Stop loss</div><div class="level-val stop-val" id="an-stop">—</div></div>
       <div class="level"><div class="level-label">Target</div><div class="level-val target-val" id="an-target">—</div></div>
     </div>
-    <div class="analysis-note" id="an-note">Select an asset to get a trade setup from your AI co-pilot.</div>
+    <div class="analysis-note" id="an-note">Select an asset to get a complete trade setup from your AI co-pilot.</div>
     <button class="analyse-btn" onclick="askCopilot()">🤖 Ask AI Co-Pilot ↗</button>
   </div>
 
-  <!-- Trade Log -->
   <div class="section-label">Trade log</div>
   <div class="log" id="trade-log">
     <div class="log-empty">No trades yet.</div>
@@ -193,27 +157,31 @@
 
 <div class="bottom-nav">
   <div class="nav-item active"><div class="nav-icon">📊</div><div class="nav-label">Markets</div></div>
-  <div class="nav-item"><div class="nav-icon">🔔</div><div class="nav-label">Alerts</div></div>
+  <div class="nav-item"><div class="nav-icon">💼</div><div class="nav-label">Positions</div></div>
   <div class="nav-item"><div class="nav-icon">📋</div><div class="nav-label">Log</div></div>
   <div class="nav-item"><div class="nav-icon">⚙️</div><div class="nav-label">Settings</div></div>
 </div>
 
 <script>
-const API_KEY = '0d8660d8c78e4401ae868c982a47506c';
-const WEBHOOK = 'https://tradeai-webhook.onrender.com';
+const CAP_API = 'https://api-capital.backend.capital.com';
+const API_KEY = '3gr9vIezZddUBLSi';
+const EMAIL = 'nasrudean.abdullahi@gmail.com';
+const PASS = 'Nasr8166$';
+const TWELVE_KEY = '0d8660d8c78e4401ae868c982a47506c';
+
 const ASSETS = [
-  { symbol: 'XAU/USD', name: 'Gold', icon: '🥇' },
-  { symbol: 'XAG/USD', name: 'Silver', icon: '🥈' },
-  { symbol: 'XPT/USD', name: 'Platinum', icon: '⬜' },
-  { symbol: 'EUR/USD', name: 'EUR/USD', icon: '💶' },
-  { symbol: 'GBP/USD', name: 'GBP/USD', icon: '💷' },
-  { symbol: 'BTC/USD', name: 'Bitcoin', icon: '₿' },
+  { symbol: 'XAU/USD', epic: 'GOLD', name: 'Gold', icon: '🥇' },
+  { symbol: 'XAG/USD', epic: 'SILVER', name: 'Silver', icon: '🥈' },
+  { symbol: 'XPT/USD', epic: 'PLATINUM', name: 'Platinum', icon: '⬜' },
+  { symbol: 'EUR/USD', epic: 'EURUSD', name: 'EUR/USD', icon: '💶' },
+  { symbol: 'GBP/USD', epic: 'GBPUSD', name: 'GBP/USD', icon: '💷' },
+  { symbol: 'BTC/USD', epic: 'BITCOIN', name: 'Bitcoin', icon: '₿' },
 ];
 
+let cst = null, secToken = null;
 let prices = {}, prevPrices = {}, selected = null;
 let trades = JSON.parse(localStorage.getItem('nas_trades') || '[]');
-let account = parseFloat(localStorage.getItem('nas_account') || '100');
-let lastAlertId = null;
+let accountBalance = 0, openPnl = 0;
 
 function fmt(sym, p) {
   if (!p) return '—';
@@ -229,75 +197,131 @@ function pct(sym) {
   return ((c - p) / p) * 100;
 }
 
-async function fetchPrice(sym) {
+async function capitalSession() {
   try {
-    const r = await fetch(`https://api.twelvedata.com/price?symbol=${encodeURIComponent(sym)}&apikey=${API_KEY}`);
+    const r = await fetch(`${CAP_API}/api/v1/session`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CAP-API-KEY': API_KEY },
+      body: JSON.stringify({ identifier: EMAIL, password: PASS })
+    });
+    const h = r.headers;
+    cst = h.get('CST');
+    secToken = h.get('X-SECURITY-TOKEN');
     const d = await r.json();
-    return d.price ? parseFloat(d.price) : null;
-  } catch { return null; }
-}
-
-async function fetchAll() {
-  document.getElementById('live-text').textContent = 'Updating...';
-  prevPrices = {...prices};
-  const results = await Promise.all(ASSETS.map(a => fetchPrice(a.symbol)));
-  ASSETS.forEach((a,i) => { if (results[i]) prices[a.symbol] = results[i]; });
-  renderAssets();
-  const now = new Date();
-  document.getElementById('live-text').textContent = 'Live';
-  document.getElementById('refresh-time').textContent = 'Updated ' + now.toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'});
-}
-
-async function fetchAlerts() {
-  try {
-    const r = await fetch(WEBHOOK + '/alerts');
-    const d = await r.json();
-    document.getElementById('conn-dot').className = 'conn-dot';
-    document.getElementById('conn-text').textContent = 'Connected to alert server';
-
-    if (d.alerts && d.alerts.length > 0) {
-      renderAlerts(d.alerts);
-      // Show banner for newest alert if it's new
-      const newest = d.alerts[0];
-      const newestId = newest.receivedAt;
-      if (newestId !== lastAlertId) {
-        lastAlertId = newestId;
-        showAlertBanner(newest);
+    if (cst && secToken) {
+      document.getElementById('conn-bar').className = 'conn-bar ok';
+      document.getElementById('conn-bar').textContent = '✅ Connected to Capital.com · ' + (d.accountType || '');
+      document.getElementById('live-dot').className = 'live-dot';
+      document.getElementById('live-text').textContent = 'Live';
+      if (d.dealingEnabled !== undefined) {
+        accountBalance = d.hasActiveDemoAccounts ? 0 : 0;
       }
+      await fetchAccount();
+      await fetchPositions();
+      return true;
+    } else {
+      throw new Error('No session tokens');
     }
   } catch(e) {
-    document.getElementById('conn-dot').className = 'conn-dot disconnected';
-    document.getElementById('conn-text').textContent = 'Alert server offline — will retry';
+    document.getElementById('conn-bar').className = 'conn-bar err';
+    document.getElementById('conn-bar').textContent = '⚠️ Capital.com connection failed — using backup prices';
+    document.getElementById('live-dot').className = 'live-dot off';
+    document.getElementById('live-text').textContent = 'Backup';
+    return false;
   }
 }
 
-function showAlertBanner(alert) {
-  const banner = document.getElementById('alert-banner');
-  const msg = alert.message || JSON.stringify(alert);
-  const isRising = msg.toLowerCase().includes('buy') || msg.toLowerCase().includes('bull') || msg.toLowerCase().includes('long');
-  const isFalling = msg.toLowerCase().includes('sell') || msg.toLowerCase().includes('bear') || msg.toLowerCase().includes('short');
-  banner.className = 'alert-banner visible ' + (isRising ? 'buy' : isFalling ? 'sell' : '');
-  document.getElementById('alert-title').textContent = isRising ? '🟢 Bullish Alert' : isFalling ? '🔴 Bearish Alert' : '🔔 New Alert';
-  document.getElementById('alert-msg').textContent = msg;
-  document.getElementById('alert-time').textContent = new Date(alert.receivedAt).toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'});
+async function fetchAccount() {
+  if (!cst) return;
+  try {
+    const r = await fetch(`${CAP_API}/api/v1/accounts`, {
+      headers: { 'CST': cst, 'X-SECURITY-TOKEN': secToken, 'X-CAP-API-KEY': API_KEY }
+    });
+    const d = await r.json();
+    if (d.accounts && d.accounts.length > 0) {
+      const acc = d.accounts[0];
+      accountBalance = acc.balance?.balance || 0;
+      openPnl = acc.balance?.profitLoss || 0;
+      document.getElementById('stat-account').textContent = 'A$' + accountBalance.toFixed(2);
+      const pnlEl = document.getElementById('stat-pnl');
+      pnlEl.textContent = (openPnl >= 0 ? '+' : '') + 'A$' + Math.abs(openPnl).toFixed(2);
+      pnlEl.className = 'stat-value ' + (openPnl > 0 ? 'positive' : openPnl < 0 ? 'negative' : '');
+    }
+  } catch(e) { console.log('Account fetch failed', e); }
 }
 
-function renderAlerts(alerts) {
-  const feed = document.getElementById('tv-feed');
-  if (!alerts.length) {
-    feed.innerHTML = '<div class="tv-empty">No alerts yet. Set up TradingView alerts to see them here.</div>';
-    return;
-  }
-  feed.innerHTML = alerts.slice(0, 10).map(a => {
-    const msg = a.message || JSON.stringify(a);
-    const time = new Date(a.receivedAt).toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'});
-    const priceText = a.price ? `<div class="tv-price">${a.price}</div>` : '';
-    return `<div class="tv-entry">
-      <div class="tv-top"><div class="tv-asset">${a.symbol || 'Alert'}</div><div class="tv-time">${time}</div></div>
-      <div class="tv-msg">${msg}</div>
-      ${priceText}
-    </div>`;
-  }).join('');
+async function fetchPositions() {
+  if (!cst) return;
+  try {
+    const r = await fetch(`${CAP_API}/api/v1/positions`, {
+      headers: { 'CST': cst, 'X-SECURITY-TOKEN': secToken, 'X-CAP-API-KEY': API_KEY }
+    });
+    const d = await r.json();
+    const box = document.getElementById('positions-box');
+    if (d.positions && d.positions.length > 0) {
+      box.innerHTML = d.positions.map(p => {
+        const pnl = p.position?.upl || 0;
+        const dir = p.position?.direction || '—';
+        const size = p.position?.size || '—';
+        const name = p.market?.instrumentName || p.market?.epic || '—';
+        const level = p.position?.level || '—';
+        return `<div class="position-row">
+          <div>
+            <div class="pos-name">${name} · ${dir}</div>
+            <div class="pos-detail">Size: ${size} · Entry: ${level}</div>
+          </div>
+          <div class="pos-pnl ${pnl >= 0 ? 'win' : 'loss'}">${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}</div>
+        </div>`;
+      }).join('');
+    } else {
+      box.innerHTML = '<div class="pos-empty">No open positions</div>';
+    }
+  } catch(e) { console.log('Positions fetch failed', e); }
+}
+
+async function fetchCapitalPrices() {
+  if (!cst) return false;
+  try {
+    const epics = ASSETS.map(a => a.epic).join(',');
+    const r = await fetch(`${CAP_API}/api/v1/markets?epics=${epics}`, {
+      headers: { 'CST': cst, 'X-SECURITY-TOKEN': secToken, 'X-CAP-API-KEY': API_KEY }
+    });
+    const d = await r.json();
+    if (d.marketDetails) {
+      prevPrices = {...prices};
+      d.marketDetails.forEach(m => {
+        const asset = ASSETS.find(a => a.epic === m.instrument?.epic);
+        if (asset && m.snapshot?.bid) {
+          prices[asset.symbol] = (m.snapshot.bid + m.snapshot.offer) / 2;
+        }
+      });
+      return true;
+    }
+    return false;
+  } catch(e) { return false; }
+}
+
+async function fetchBackupPrices() {
+  try {
+    prevPrices = {...prices};
+    const results = await Promise.all(ASSETS.map(async a => {
+      const r = await fetch(`https://api.twelvedata.com/price?symbol=${encodeURIComponent(a.symbol)}&apikey=${TWELVE_KEY}`);
+      const d = await r.json();
+      return d.price ? parseFloat(d.price) : null;
+    }));
+    ASSETS.forEach((a,i) => { if (results[i]) prices[a.symbol] = results[i]; });
+  } catch(e) { console.log('Backup prices failed', e); }
+}
+
+async function refresh() {
+  document.getElementById('live-text').textContent = 'Updating...';
+  const capOk = await fetchCapitalPrices();
+  if (!capOk) await fetchBackupPrices();
+  if (cst) { await fetchAccount(); await fetchPositions(); }
+  renderAssets();
+  const now = new Date();
+  document.getElementById('refresh-time').textContent = 'Updated ' + now.toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'});
+  document.getElementById('live-text').textContent = cst ? 'Live' : 'Backup';
 }
 
 function renderAssets() {
@@ -330,28 +354,21 @@ function selectAsset(sym) {
   renderAssets();
   const p = prices[sym];
   document.getElementById('an-name').textContent = selected.name;
-  document.getElementById('an-sub').textContent = p ? fmt(sym, p) + ' · Tap below for trade setup' : 'Price loading...';
+  document.getElementById('an-sub').textContent = p ? fmt(sym, p) + ' · Tap below for setup' : 'Loading...';
   document.getElementById('an-signal').textContent = '—';
   document.getElementById('an-signal').className = 'signal-pill signal-wait';
   document.getElementById('an-levels').style.display = 'none';
-  document.getElementById('an-note').textContent = `Tap the button to get a live trade setup for ${selected.name} from your AI co-pilot.`;
+  document.getElementById('an-note').textContent = `Tap the button to get a live trade setup for ${selected.name}.`;
 }
 
 function askCopilot() {
   const p = selected ? prices[selected.symbol] : null;
   const sym = selected ? selected.symbol : null;
+  const posText = accountBalance > 0 ? `Account balance: A$${accountBalance.toFixed(2)}.` : 'Account: A$100.';
   const msg = selected
-    ? `I'm looking at ${selected.name} (${sym}). Current price: ${fmt(sym, p)}. Account: A$${account.toFixed(2)}. Give me a complete trade setup: buy or sell, entry, stop loss, take profit, and position size for 2% max risk.`
-    : `Analyse the current market for me. Gold is at ${fmt('XAU/USD', prices['XAU/USD'])}, Silver at ${fmt('XAG/USD', prices['XAG/USD'])}, EUR/USD at ${fmt('EUR/USD', prices['EUR/USD'])}. My account is A$${account.toFixed(2)}. What's the best trade right now and why?`;
+    ? `I'm looking at ${selected.name} (${sym}). Current price: ${fmt(sym, p)}. ${posText} Give me a complete trade setup: buy or sell, entry, stop loss, take profit, and position size for 2% max risk. Islamic account — intraday only.`
+    : `Analyse the current market. Gold: ${fmt('XAU/USD', prices['XAU/USD'])}, Silver: ${fmt('XAG/USD', prices['XAG/USD'])}, EUR/USD: ${fmt('EUR/USD', prices['EUR/USD'])}. ${posText} What's the best trade right now and why?`;
   window.open(`https://claude.ai/new?q=${encodeURIComponent(msg)}`, '_blank');
-}
-
-function updateStats() {
-  const pnl = trades.reduce((s,t) => s + (t.pnl||0), 0);
-  const pnlEl = document.getElementById('stat-pnl');
-  pnlEl.textContent = (pnl >= 0 ? '+' : '') + 'A$' + Math.abs(pnl).toFixed(2);
-  pnlEl.className = 'stat-value ' + (pnl > 0 ? 'positive' : pnl < 0 ? 'negative' : '');
-  document.getElementById('stat-account').textContent = 'A$' + (account + pnl).toFixed(2);
 }
 
 function renderLog() {
@@ -364,12 +381,14 @@ function renderLog() {
     </div>`).join('');
 }
 
-updateStats();
-renderLog();
-fetchAll();
-fetchAlerts();
-setInterval(fetchAll, 60000);
-setInterval(fetchAlerts, 15000);
+async function init() {
+  renderLog();
+  await capitalSession();
+  await refresh();
+  setInterval(refresh, 30000);
+}
+
+init();
 </script>
 </body>
 </html>
