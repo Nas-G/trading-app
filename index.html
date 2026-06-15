@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TradeAI">
+<meta name="theme-color" content="#0a0a0a">
+<title>TradeAI — Co-Pilot</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #141414;
+    --bg3: #1e1e1e;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0f0f0;
+    --text2: #888;
+    --text3: #555;
+    --green: #22c55e;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --gold: #f59e0b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  
+  .app { max-width: 430px; margin: 0 auto; padding-bottom: 80px; }
+  
+  /* Header */
+  .header { padding: 56px 20px 16px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .header-title { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  .header-title span { color: var(--gold); }
+  .live-indicator { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+
+  /* Stats row */
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 20px 20px; }
+  .stat-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 14px 16px; }
+  .stat-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .stat-value { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+  .stat-value.positive { color: var(--green); }
+  .stat-value.negative { color: var(--red); }
+
+  /* Section */
+  .section-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 20px; margin-bottom: 10px; }
+
+  /* Assets */
+  .assets { padding: 0 20px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .asset-row { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 14px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.15s; active-scale: 0.98; }
+  .asset-row:active { background: var(--bg3); transform: scale(0.99); }
+  .asset-row.selected { border-color: var(--blue); background: rgba(59,130,246,0.06); }
+  .asset-left { display: flex; flex-direction: column; gap: 3px; }
+  .asset-name { font-size: 15px; font-weight: 600; }
+  .asset-symbol { font-size: 12px; color: var(--text2); }
+  .asset-right { text-align: right; display: flex; flex-direction: column; gap: 3px; }
+  .asset-price { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .asset-change { font-size: 12px; font-weight: 500; }
+  .asset-change.up { color: var(--green); }
+  .asset-change.down { color: var(--red); }
+  .asset-change.flat { color: var(--text2); }
+  .asset-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 12px; flex-shrink: 0; }
+
+  /* Analysis card */
+  .analysis { margin: 0 20px 24px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; overflow: hidden; }
+  .analysis-header { padding: 16px 18px 14px; border-bottom: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .analysis-asset-name { font-size: 16px; font-weight: 600; }
+  .analysis-price { font-size: 14px; color: var(--text2); margin-top: 2px; }
+  .signal-pill { font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
+  .signal-buy { background: rgba(34,197,94,0.15); color: var(--green); }
+  .signal-sell { background: rgba(239,68,68,0.15); color: var(--red); }
+  .signal-wait { background: var(--bg3); color: var(--text2); }
+  .levels { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 14px 18px; gap: 10px; }
+  .level { text-align: center; }
+  .level-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+  .level-val { font-size: 14px; font-weight: 600; }
+  .level-val.entry { color: var(--blue); }
+  .level-val.stop { color: var(--red); }
+  .level-val.target { color: var(--green); }
+  .analysis-note { font-size: 13px; color: var(--text2); line-height: 1.6; padding: 0 18px 14px; }
+  .analyse-btn { margin: 0 18px 18px; width: calc(100% - 36px); padding: 13px; background: var(--blue); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .analyse-btn:active { opacity: 0.85; transform: scale(0.98); }
+  
+  /* Refresh */
+  .refresh-row { display: flex; justify-content: space-between; align-items: center; padding: 0 20px 10px; }
+  .refresh-time { font-size: 12px; color: var(--text3); }
+  .refresh-btn { font-size: 12px; color: var(--blue); background: none; border: none; cursor: pointer; padding: 4px 8px; }
+
+  /* Trade log */
+  .log { margin: 0 20px 24px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; overflow: hidden; }
+  .log-entry { padding: 14px 18px; border-bottom: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .log-entry:last-child { border-bottom: none; }
+  .log-empty { padding: 24px 18px; text-align: center; font-size: 14px; color: var(--text3); }
+  .log-asset { font-size: 14px; font-weight: 600; }
+  .log-detail { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .log-pnl { font-size: 15px; font-weight: 600; }
+  .log-pnl.win { color: var(--green); }
+  .log-pnl.loss { color: var(--red); }
+
+  /* Bottom nav */
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); border-top: 0.5px solid var(--border); padding: 10px 0 28px; display: flex; justify-content: space-around; z-index: 100; }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 4px 20px; }
+  .nav-icon { font-size: 22px; }
+  .nav-label { font-size: 10px; color: var(--text2); }
+  .nav-item.active .nav-label { color: var(--blue); }
+  .nav-item.active .nav-icon { filter: brightness(0) saturate(100%) invert(46%) sepia(98%) saturate(1352%) hue-rotate(199deg) brightness(101%) contrast(96%); }
+
+  /* Loading skeleton */
+  .skeleton { background: linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+  @keyframes shimmer { 0%{background-position:200% 0}100%{background-position:-200% 0} }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-title">Trade<span>AI</span></div>
+    <div class="live-indicator">
+      <div class="live-dot"></div>
+      <span id="live-text">Connecting...</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">Account</div>
+      <div class="stat-value" id="stat-account">A$100.00</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">P&L Today</div>
+      <div class="stat-value" id="stat-pnl">A$0.00</div>
+    </div>
+  </div>
+
+  <div class="section-label">Watchlist</div>
+  <div class="refresh-row">
+    <div class="refresh-time" id="refresh-time">Loading...</div>
+    <button class="refresh-btn" onclick="fetchAll()">↻ Refresh</button>
+  </div>
+  <div class="assets" id="assets-list">
+    <div style="height:56px;border-radius:14px;" class="skeleton"></div>
+    <div style="height:56px;border-radius:14px;" class="skeleton"></div>
+    <div style="height:56px;border-radius:14px;" class="skeleton"></div>
+    <div style="height:56px;border-radius:14px;" class="skeleton"></div>
+  </div>
+
+  <div class="section-label">Analysis</div>
+  <div class="analysis">
+    <div class="analysis-header">
+      <div>
+        <div class="analysis-asset-name" id="an-name">Select an asset</div>
+        <div class="analysis-price" id="an-price">Tap any asset above</div>
+      </div>
+      <div class="signal-pill signal-wait" id="an-signal">—</div>
+    </div>
+    <div class="levels" id="an-levels" style="display:none;">
+      <div class="level"><div class="level-label">Entry</div><div class="level-val entry" id="an-entry">—</div></div>
+      <div class="level"><div class="level-label">Stop loss</div><div class="level-val stop" id="an-stop">—</div></div>
+      <div class="level"><div class="level-label">Target</div><div class="level-val target" id="an-target">—</div></div>
+    </div>
+    <div class="analysis-note" id="an-note">Select an asset from the watchlist to get a trade setup from your AI co-pilot.</div>
+    <button class="analyse-btn" onclick="sendToCoach()">🤖 Ask AI Co-Pilot ↗</button>
+  </div>
+
+  <div class="section-label">Trade log</div>
+  <div class="log" id="trade-log">
+    <div class="log-empty">No trades yet. Your history will appear here.</div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <div class="nav-item active">
+    <div class="nav-icon">📊</div>
+    <div class="nav-label">Markets</div>
+  </div>
+  <div class="nav-item">
+    <div class="nav-icon">📰</div>
+    <div class="nav-label">News</div>
+  </div>
+  <div class="nav-item">
+    <div class="nav-icon">📋</div>
+    <div class="nav-label">Log trade</div>
+  </div>
+  <div class="nav-item">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-label">Settings</div>
+  </div>
+</div>
+
+<script>
+const API_KEY = '0d8660d8c78e4401ae868c982a47506c';
+const ASSETS = [
+  { symbol: 'XAU/USD', name: 'Gold', icon: '🥇' },
+  { symbol: 'XAG/USD', name: 'Silver', icon: '🥈' },
+  { symbol: 'XPT/USD', name: 'Platinum', icon: '⬜' },
+  { symbol: 'EUR/USD', name: 'EUR/USD', icon: '💶' },
+  { symbol: 'GBP/USD', name: 'GBP/USD', icon: '💷' },
+  { symbol: 'BTC/USD', name: 'Bitcoin', icon: '₿' },
+];
+
+let prices = {};
+let prevPrices = {};
+let selected = null;
+let trades = JSON.parse(localStorage.getItem('trades') || '[]');
+let account = parseFloat(localStorage.getItem('account') || '100');
+let pnl = 0;
+
+function fmt(sym, p) {
+  if (!p) return '—';
+  if (sym.includes('BTC')) return '$' + p.toLocaleString('en-AU', {maximumFractionDigits:0});
+  if (sym.includes('XAU')) return p.toFixed(2);
+  if (sym.includes('XAG') || sym.includes('XPT')) return p.toFixed(3);
+  return p.toFixed(4);
+}
+
+function pct(sym) {
+  const c = prices[sym], p = prevPrices[sym];
+  if (!c || !p) return null;
+  return ((c - p) / p) * 100;
+}
+
+async function fetchPrice(sym) {
+  try {
+    const r = await fetch(`https://api.twelvedata.com/price?symbol=${encodeURIComponent(sym)}&apikey=${API_KEY}`);
+    const d = await r.json();
+    return d.price ? parseFloat(d.price) : null;
+  } catch { return null; }
+}
+
+async function fetchAll() {
+  document.getElementById('live-text').textContent = 'Updating...';
+  prevPrices = {...prices};
+  const results = await Promise.all(ASSETS.map(a => fetchPrice(a.symbol)));
+  ASSETS.forEach((a,i) => { if (results[i]) prices[a.symbol] = results[i]; });
+  renderAssets();
+  const now = new Date();
+  document.getElementById('live-text').textContent = 'Live';
+  document.getElementById('refresh-time').textContent = 'Updated ' + now.toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'});
+}
+
+function renderAssets() {
+  const list = document.getElementById('assets-list');
+  if (!Object.keys(prices).length) {
+    list.innerHTML = '<div style="text-align:center;color:#555;padding:20px;font-size:14px;">Unable to load prices. Tap refresh.</div>';
+    return;
+  }
+  list.innerHTML = ASSETS.map(a => {
+    const p = prices[a.symbol];
+    const ch = pct(a.symbol);
+    const chClass = ch === null ? 'flat' : ch > 0 ? 'up' : 'down';
+    const chText = ch === null ? '' : (ch >= 0 ? '+' : '') + ch.toFixed(3) + '%';
+    const isSel = selected && selected.symbol === a.symbol;
+    return `<div class="asset-row ${isSel ? 'selected' : ''}" onclick="selectAsset('${a.symbol}')">
+      <div style="display:flex;align-items:center;">
+        <div class="asset-icon">${a.icon}</div>
+        <div class="asset-left">
+          <div class="asset-name">${a.name}</div>
+          <div class="asset-symbol">${a.symbol}</div>
+        </div>
+      </div>
+      <div class="asset-right">
+        <div class="asset-price">${fmt(a.symbol, p)}</div>
+        <div class="asset-change ${chClass}">${p ? chText || 'Live' : '—'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectAsset(sym) {
+  selected = ASSETS.find(a => a.symbol === sym);
+  renderAssets();
+  const p = prices[sym];
+  const ch = pct(sym);
+  document.getElementById('an-name').textContent = selected.name;
+  document.getElementById('an-price').textContent = p ? fmt(sym, p) : 'Price unavailable';
+  document.getElementById('an-signal').textContent = '—';
+  document.getElementById('an-signal').className = 'signal-pill signal-wait';
+  document.getElementById('an-levels').style.display = 'none';
+  document.getElementById('an-note').textContent = `Tap the button below to get a live trade setup for ${selected.name} from your AI co-pilot.`;
+}
+
+function sendToCoach() {
+  if (!selected) {
+    const msg = "Analyse the current market and tell me the best asset to trade right now and why.";
+    window.open(`https://claude.ai/new?q=${encodeURIComponent(msg)}`, '_blank');
+    return;
+  }
+  const p = prices[selected.symbol];
+  const msg = `I'm looking at ${selected.name} (${selected.symbol}) right now on my trading app. Current price is ${fmt(selected.symbol, p)}. My account is A$${account.toFixed(2)}. Give me a complete trade setup: buy or sell, exact entry price, stop loss, and take profit target. Also tell me position size for 2% risk max.`;
+  window.open(`https://claude.ai/new?q=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function renderLog() {
+  const log = document.getElementById('trade-log');
+  if (!trades.length) {
+    log.innerHTML = '<div class="log-empty">No trades yet. Your history will appear here.</div>';
+    return;
+  }
+  log.innerHTML = trades.slice().reverse().map(t => `
+    <div class="log-entry">
+      <div>
+        <div class="log-asset">${t.asset} — ${t.direction}</div>
+        <div class="log-detail">${t.date} · Entry ${t.entry}</div>
+      </div>
+      <div class="log-pnl ${t.pnl >= 0 ? 'win' : 'loss'}">${t.pnl >= 0 ? '+' : ''}A$${t.pnl.toFixed(2)}</div>
+    </div>
+  `).join('');
+}
+
+function updateStats() {
+  pnl = trades.reduce((s, t) => s + (t.pnl || 0), 0);
+  const pnlEl = document.getElementById('stat-pnl');
+  pnlEl.textContent = (pnl >= 0 ? '+' : '') + 'A$' + Math.abs(pnl).toFixed(2);
+  pnlEl.className = 'stat-value ' + (pnl > 0 ? 'positive' : pnl < 0 ? 'negative' : '');
+  document.getElementById('stat-account').textContent = 'A$' + (account + pnl).toFixed(2);
+}
+
+renderLog();
+updateStats();
+fetchAll();
+setInterval(fetchAll, 60000);
+</script>
+</body>
+</html>
